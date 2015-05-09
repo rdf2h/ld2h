@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html class="render" resource="">
+    <head>
+        <title>This will be replaced when the data is loaded</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="js/libs/rdf2h/rdf2h.js"></script>
+        <script src="js/libs/jquery/jquery.min.js"></script>
+        <script src="js/rdf4t.js"></script>
+        <script id="data" type="text/turtle">
+    @prefix s: <https://schema.org/>.
+    <> s:headline "An RDF4t demo page" .
+    <> s:text '''Everything you see on this page is content expressed in RDF either within this
+page or from somewhere else on the web rendered  in the browser using 
+<a href="http://rdf2h.github.io/rdf2h">RDF2h</a> and mustache templates.'''.
+        </script>
+        <script id="matchers" type="text/turtle">
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix r2h: <http://rdf2h.github.io/2015/rdf2h#> .
+@prefix dc: <http://purl.org/dc/elements/1.1/>.
+@prefix s: <https://schema.org/>.
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+
+<page> a r2h:Matcher ;
+  r2h:triplePattern [    
+    r2h:subject r2h:this;
+    r2h:predicate s:headline;
+  ];
+  r2h:template [ 
+    r2h:context r2h:Default;
+    r2h:mustache <#page-template>
+  ];
+  r2h:before <title>.
+
+<title> a r2h:Matcher ;
+  r2h:triplePattern [    
+    r2h:subject r2h:this;
+    r2h:predicate dc:title;
+  ];
+  r2h:template [ 
+    r2h:context r2h:Default;
+    r2h:mustache '''<h2>{{dc:title}}</h2>
+        {{{:continue}}}'''
+  ];
+  r2h:before <label>.
+
+<label> a r2h:Matcher ;
+  r2h:triplePattern [    
+    r2h:subject r2h:this;
+    r2h:predicate rdfs:label;
+  ];
+  r2h:template [ 
+    r2h:context r2h:Default;
+    r2h:mustache '''Label: {{rdfs:label}}<br/>
+         {{{:continue}}}'''
+  ];
+  r2h:before <catchall>.
+          
+<name> a r2h:Matcher ;
+  r2h:triplePattern [    
+    r2h:subject r2h:this;
+    r2h:predicate foaf:name;
+  ];
+  r2h:template [ 
+    r2h:context r2h:Default;
+    r2h:mustache '''Name: {{foaf:name}}<br/>
+         {{{:continue}}}'''
+  ];
+  r2h:before <label>.  
+
+<catchall> a r2h:Matcher ;
+  r2h:template [ 
+    r2h:context r2h:Default;
+    r2h:mustache "<!-- no (more) template for {{{.}}} -->"
+  ].  
+
+        </script>
+        <script id="page-template" type="text/x-mustache-template">
+    <head>
+      <title>{{s:headline}}</title>
+    </heaad>
+    <body>
+        <h1>{{s:headline}}</h1>
+        <p>{{{s:text}}}</p>
+<span resource="http://example.org" class="render">foobar</span>
+<span resource="https://www.w3.org/People/Berners-Lee/card#i" class="fetch">Timbl comes here</span>
+    </body>
+        </script>
+            
+        <script type="text/javascript">
+$(function () {
+   RDF4t.expand();
+})
+        </script>
+    </head>
+    <body>
+This will be replaced by rendered RDF.
+    </body>
+</html>
