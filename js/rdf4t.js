@@ -13,9 +13,9 @@ RDF4t.expand = function() {
         return div.firstChild.href;
     }
     RDF4t.getMatchersGraph(function (matchers) {
-        function expandWithMatchers() {
-            //Rendering with local RDF
-            RDF4t.getDataGraph(function (data) {
+        RDF4t.getDataGraph(function (localData) {
+            function expandWithMatchers() {
+                //Rendering with local RDF
                 var elems = $(".render");
                 elems.removeClass("render");
                 for (var i = 0; i < elems.length; i++) {
@@ -23,39 +23,51 @@ RDF4t.expand = function() {
                     var relativeURI = elem.attr("resource");
                     if (typeof relativeURI !== 'undefined') {
                         var uri = canonicalize(relativeURI);
-                        var rendered = new RDF2h(matchers).render(data, rdf.createNamedNode(uri));
+                        var rendered = new RDF2h(matchers).render(localData, rdf.createNamedNode(uri));
                         elem.html(rendered);
                         expandWithMatchers();
                     } else {
                         console.warn("Element of class render without resource attribute cannot be rendered.", elem);
                     }
                 }
-            });
-            //Remote resources
-            var elems = $(".fetch");
-            elems.removeClass("fetch");
-            for (var i = 0; i < elems.length; i++) {
-                var elem = $(elems[i]);
-                var relativeURI = elem.attr("resource");
-                if (typeof relativeURI !== 'undefined') {
-                    var uri = canonicalize(relativeURI);
-                    var store = new rdf.LdpStore();
-                    store.match(
-                            uri.split("#")[0],
-                            null,
-                            null,
-                            null,
-                            function (data) {
-                                var rendered = new RDF2h(matchers).render(data, rdf.createNamedNode(uri));
-                                elem.html(rendered);
-                            });
-                    expandWithMatchers();
-                } else {
-                    console.warn("Element of class fetch without resource attribute cannot be rendered.", elem);
+                //Remote resources
+                var elems = $(".fetch");
+                elems.removeClass("fetch");
+                var currentElem = 0;
+                function processsNextElem() {
+                    if (currentElem >= elems.length) {
+                        return;
+                    }
+                    var elem = $(elems[currentElem++]);
+                    var relativeURI = elem.attr("resource");
+                    if (typeof relativeURI !== 'undefined') {
+                        var uri = canonicalize(relativeURI);
+                        var store = new rdf.LdpStore();
+                        var graphUri = uri.split("#")[0];
+                        store.match(
+                                graphUri,
+                                null,
+                                null,
+                                null,
+                                function (data, error) {
+                                    if (!data) {
+                                        console.warn("Couldn't get any triple from "+graphUri+". reason: "+error);
+                                    } else {
+                                        console.log("Got graph of size "+data.length+" from "+graphUri);
+                                    }
+                                    var rendered = new RDF2h(matchers).render(data, rdf.createNamedNode(uri));
+                                    elem.html(rendered);
+                                    expandWithMatchers();
+                                });
+                    } else {
+                        console.warn("Element of class fetch without resource attribute cannot be rendered.", elem);
+                    }
+                    processsNextElem();
                 }
+                processsNextElem();
             }
-        }
-        expandWithMatchers();
+            expandWithMatchers();
+        });
     });
 }
 
@@ -67,10 +79,47 @@ RDF4t.getDataGraph = function(callback) {
     }, window.location.toString());
 }
 
-RDF4t.getMatchersGraph = function(callback) {
-    var matchersTtl = $("#matchers").text();
-    rdf.parseTurtle(matchersTtl, function (matchers) {
-        console.log(matchers.toString());
-        callback(matchers);
-    }, window.location.toString());
+RDF4t.getMatchersGraph = function (callback) {
+    function parse(matchersTtl) {
+        rdf.parseTurtle(matchersTtl, function (matchers) {
+            console.log(matchers.toString());
+            callback(matchers);
+        }, window.location.toString());
+    }
+    var matchersElem = $("#matchers");
+    if (matchersElem[0]) {
+        if (matchersElem.attr("src")) {
+            console.warn("Using script element with src causes is not recommended, use <link rel=\"matchers\" instead");
+            $.get(matchersElem.attr("src"), function (matchersTtl) {
+                parse(matchersTtl);
+            });
+        } else {
+            var matchersTtl = matchersElem.text();
+            parse(matchersTtl);
+        }
+    }
+    var matcherLinks = $("link[rel='matchers']");
+    if (matcherLinks.length > 0) {
+        var matchersGraph = rdf.createGraph();
+        var currentLink = 0;
+        var processLink = function() {
+            var href = matcherLinks[currentLink++].href;
+            $.get(href, function (matchersTtl) {
+                rdf.parseTurtle(matchersTtl, function (matchers) {
+                    console.log(matchers.toString());
+                    matchersGraph.addAll(matchers);
+                    if (matcherLinks.length > currentLink) {
+                        processLink();
+                    } else {
+                        callback(matchersGraph);
+                    }
+                }, window.location.toString());
+            });
+        };
+        processLink();
+    } else {
+        console.warn("No matchers could be found, specify a script element with \n\
+        id matchers or link headers of type matchers");
+    }
+    
 }
