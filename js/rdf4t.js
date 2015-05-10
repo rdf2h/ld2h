@@ -3,6 +3,8 @@
 function RDF4t() {
 }
 
+RDF4t.store = new rdf.LdpStore();
+
 RDF4t.expand = function() {
     function canonicalize(url) {
         //see http://stackoverflow.com/questions/470832/getting-an-absolute-url-from-a-relative-one-ie6-issue/22918332#22918332
@@ -42,9 +44,8 @@ RDF4t.expand = function() {
                     var relativeURI = elem.attr("resource");
                     if (typeof relativeURI !== 'undefined') {
                         var uri = canonicalize(relativeURI);
-                        var store = new rdf.LdpStore();
                         var graphUri = uri.split("#")[0];
-                        store.match(
+                        RDF4t.store.match(
                                 graphUri,
                                 null,
                                 null,
