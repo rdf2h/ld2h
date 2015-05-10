@@ -97,29 +97,30 @@ RDF4t.getMatchersGraph = function (callback) {
             var matchersTtl = matchersElem.text();
             parse(matchersTtl);
         }
-    }
-    var matcherLinks = $("link[rel='matchers']");
-    if (matcherLinks.length > 0) {
-        var matchersGraph = rdf.createGraph();
-        var currentLink = 0;
-        var processLink = function() {
-            var href = matcherLinks[currentLink++].href;
-            $.get(href, function (matchersTtl) {
-                rdf.parseTurtle(matchersTtl, function (matchers) {
-                    console.log(matchers.toString());
-                    matchersGraph.addAll(matchers);
-                    if (matcherLinks.length > currentLink) {
-                        processLink();
-                    } else {
-                        callback(matchersGraph);
-                    }
-                }, window.location.toString());
-            });
-        };
-        processLink();
     } else {
-        console.warn("No matchers could be found, specify a script element with \n\
-        id matchers or link headers of type matchers");
+        var matcherLinks = $("link[rel='matchers']");
+        if (matcherLinks.length > 0) {
+            var matchersGraph = rdf.createGraph();
+            var currentLink = 0;
+            var processLink = function() {
+                var href = matcherLinks[currentLink++].href;
+                $.get(href, function (matchersTtl) {
+                    rdf.parseTurtle(matchersTtl, function (matchers) {
+                        console.log(matchers.toString());
+                        matchersGraph.addAll(matchers);
+                        if (matcherLinks.length > currentLink) {
+                            processLink();
+                        } else {
+                            callback(matchersGraph);
+                        }
+                    }, window.location.toString());
+                });
+            };
+            processLink();
+        } else {
+            console.warn("No matchers could be found, specify a script element with \n\
+            id matchers or link headers of type matchers");
+        }
     }
     
 }
