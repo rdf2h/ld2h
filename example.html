@@ -7,12 +7,12 @@
         <link rel="matchers" href="matchers-example.ttl" type="text/turtle" />
         <script src="js/libs/rdf2h/rdf2h.js"></script>
         <script src="js/libs/jquery/jquery.min.js"></script>
-        <script src="js/rdf4t.js"></script>
+        <script src="js/ld2h.js"></script>
         <script id="data" type="text/turtle">
     @prefix s: <https://schema.org/>.
     @prefix foaf: <http://xmlns.com/foaf/0.1/> .
     
-    <> s:headline "An RDF4t demo page" .
+    <> s:headline "An LD2h demo page" .
     <> s:text '''Everything you see on this page is content expressed in RDF either within this
 page or from somewhere else on the web rendered  in the browser using 
 <a href="http://rdf2h.github.io/rdf2h">RDF2h</a> and mustache templates.'''.
@@ -40,7 +40,7 @@ page or from somewhere else on the web rendered  in the browser using
             
         <script type="text/javascript">
 $(function () {
-   RDF4t.expand();
+   LD2h.expand();
 });
         </script>
     </head>

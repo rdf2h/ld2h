@@ -1,11 +1,11 @@
 "use strict";
 
-function RDF4t() {
+function LD2h() {
 }
 
-RDF4t.store = new rdf.LdpStore();
+LD2h.store = new rdf.LdpStore();
 
-RDF4t.expand = function() {
+LD2h.expand = function() {
     function canonicalize(url) {
         //see http://stackoverflow.com/questions/470832/getting-an-absolute-url-from-a-relative-one-ie6-issue/22918332#22918332
         var div = document.createElement('div');
@@ -14,8 +14,8 @@ RDF4t.expand = function() {
         div.innerHTML = div.innerHTML; // Run the current innerHTML back through the parser
         return div.firstChild.href;
     }
-    RDF4t.getMatchersGraph(function (matchers) {
-        RDF4t.getDataGraph(function (localData) {
+    LD2h.getMatchersGraph(function (matchers) {
+        LD2h.getDataGraph(function (localData) {
             function expandWithMatchers() {
                 //Rendering with local RDF
                 var elems = $(".render");
@@ -45,7 +45,7 @@ RDF4t.expand = function() {
                     if (typeof relativeURI !== 'undefined') {
                         var uri = canonicalize(relativeURI);
                         var graphUri = uri.split("#")[0];
-                        RDF4t.store.match(
+                        LD2h.store.match(
                                 graphUri,
                                 null,
                                 null,
@@ -72,7 +72,7 @@ RDF4t.expand = function() {
     });
 }
 
-RDF4t.getDataGraph = function(callback) {
+LD2h.getDataGraph = function(callback) {
     var matchersTtl = $("#data").text();
     rdf.parseTurtle(matchersTtl, function (data) {
         console.log(data.toString());
@@ -80,7 +80,7 @@ RDF4t.getDataGraph = function(callback) {
     }, window.location.toString());
 }
 
-RDF4t.getMatchersGraph = function (callback) {
+LD2h.getMatchersGraph = function (callback) {
     function parse(matchersTtl) {
         rdf.parseTurtle(matchersTtl, function (matchers) {
             console.log(matchers.toString());
