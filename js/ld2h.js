@@ -85,7 +85,7 @@ LD2h.getMatchersGraph = function (callback) {
         rdf.parseTurtle(matchersTtl, function (matchers) {
             console.log(matchers.toString());
             callback(matchers);
-        }, window.location.toString());
+        }, window.location.toString().split('#')[0]);
     }
     var matchersElem = $("#matchers");
     if (matchersElem[0]) {
