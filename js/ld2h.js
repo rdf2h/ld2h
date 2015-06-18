@@ -77,7 +77,7 @@ LD2h.getDataGraph = function(callback) {
     rdf.parseTurtle(matchersTtl, function (data) {
         console.log(data.toString());
         callback(data);
-    }, window.location.toString());
+    }, window.location.toString().split('#')[0]);
 }
 
 LD2h.getMatchersGraph = function (callback) {
