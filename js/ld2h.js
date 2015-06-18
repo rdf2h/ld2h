@@ -114,7 +114,7 @@ LD2h.getMatchersGraph = function (callback) {
                         } else {
                             callback(matchersGraph);
                         }
-                    }, window.location.toString());
+                    }, window.location.toString().split('#')[0]);
                 });
             };
             processLink();
