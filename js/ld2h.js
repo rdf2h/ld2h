@@ -22,10 +22,14 @@ LD2h.expand = function() {
                 elems.removeClass("render");
                 for (var i = 0; i < elems.length; i++) {
                     var elem = $(elems[i]);
+                    var mode = elem.attr("mode");
+                    if (mode) {
+                        mode = RDF2h.resolveCurie(mode);
+                    }
                     var relativeURI = elem.attr("resource");
                     if (typeof relativeURI !== 'undefined') {
                         var uri = canonicalize(relativeURI);
-                        var rendered = new RDF2h(matchers).render(localData, rdf.createNamedNode(uri));
+                        var rendered = new RDF2h(matchers).render(localData, rdf.createNamedNode(uri), mode);
                         elem.html(rendered);
                         expandWithMatchers();
                     } else {
@@ -41,6 +45,10 @@ LD2h.expand = function() {
                         return;
                     }
                     var elem = $(elems[currentElem++]);
+                    var mode = elem.attr("mode");
+                    if (mode) {
+                        mode = RDF2h.resolveCurie(mode);
+                    }
                     var relativeURI = elem.attr("resource");
                     if (typeof relativeURI !== 'undefined') {
                         var uri = canonicalize(relativeURI);
@@ -56,7 +64,7 @@ LD2h.expand = function() {
                                     } else {
                                         console.log("Got graph of size "+data.length+" from "+graphUri);
                                     }
-                                    var rendered = new RDF2h(matchers).render(data, rdf.createNamedNode(uri));
+                                    var rendered = new RDF2h(matchers).render(data, rdf.createNamedNode(uri), mode);
                                     elem.html(rendered);
                                     expandWithMatchers();
                                 });
