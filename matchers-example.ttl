@@ -4,16 +4,15 @@
 @prefix dc: <http://purl.org/dc/elements/1.1/>.
 @prefix s: <https://schema.org/>.
 @prefix foaf: <http://xmlns.com/foaf/0.1/> .
-@prefix m: <http://ld2h.example.org/mode#> .
+@prefix c: <http://ld2h.example.org/context#> .
 
 <page> a r2h:Matcher ;
   r2h:triplePattern [    
     r2h:subject r2h:this;
     r2h:predicate s:headline;
   ];
-  r2h:mode m:fullPage;
   r2h:template [ 
-    r2h:context r2h:Default;
+    r2h:context c:FullPage;
     r2h:mustache <#page-template>
   ];
   r2h:before <title>.
