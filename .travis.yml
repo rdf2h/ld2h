@@ -10,7 +10,7 @@ deploy:
   - provider: releases
     api_key:
       secure: "AZ6lKEsAiLso/AOCi3uzPbXf8FFOLYonmAnmZohNPEngLmDU3IMQoWumSbJEYD4FbUHG99rYaV6ktu/Gu/YmNKGl166wQqeUVGNi6Ngke8Lq0IWGtod2LGBadyBEiqxpIHdl9WgrSXetsvhTUKhhT8fqwL7mmyfXvQa2ya2oIDLK4oykktS5l2d4a553PWh7Vm6/PEf/957RQVJ09gP4ovYKyrnYnhNZ/wyJUjiaR4zKc/AfvFZnrGYvFnkaGU3CeWG38RLp3T0sIggocxQkgdJ1DYZ8u2DtY2dU98v8wZkPOizpI9NAyhv9Wl1VhIKYFY5oL+O7kyNhy/id1/u+90Yj3ucfLlK2KYGrG04wbJt0wpi35R/BLvPxBPwijdB/0hTl7hjujFQu5NtweHQxkrEK5XbC7KNIRkTyfO63m79T1TrPGdAZvCSsjrOOQIg0ikBhmL3xkS183m55gRPD/1T3QySqyqR7uJETQaTdK5h6Csiz2DR0hgV28FIkYQzsXDlQIojBwlQVkqDz2+g5AAIkXcWNoAobcDxezHuKD8i2rcGspQyYFbncyqKNt3EZlvSsaRhC41pNBGcn8FLHiqxg5bsLYphRfylLIu+6f0RE1mC7w+VuNSYAePJ0/wVgqQ+ff30tM3wJET3ysiMkIrgsRHnY0Qm8KwOZSzvcNIY="
-    file: dist/rdf2h.js
+    file: dist/ld2h.js
     on:
       tags: true
   - provider: npm
