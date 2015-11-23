@@ -2,7 +2,7 @@
   "name": "ld2h",
   "version": "0.0.1",
   "description": "Expand tags by rendering local or remote RDF resources, recursively.",
-  "main": "generated-es5/ld2h.js",
+  "main": "src/ld2h.js",
   "devDependencies": {
     "babel-cli": "^6.2.0",
     "babel-preset-es2015": "^6.1.18",
