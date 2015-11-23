@@ -26,7 +26,7 @@
     ]
   },
   "scripts": {
-    "prepublish": "mkdir -p dist && browserify src/ld2h.js  -d --external rdf-ext --external rdf2h --external es6-promise --ignore rdf-serializer-jsonld --ignore rdf-serializer-n3 --ignore rdf-serializer-ntriples --ignore rdf-serializer-sparql-update --ignore rdf-parser-jsonld | exorcist dist/ld2h.js.map > dist/ld2h.js",
+    "prepublish": "mkdir -p dist && browserify src/ld2h.js  -d --external rdf-ext --external rdf2h --external es6-promise  | exorcist dist/ld2h.js.map > dist/ld2h.js",
     "test": "babel-node test/test.js | tap-spec",
     "test-es5-compile": "mkdir -p test-generated-es5 && babel --source-maps inline test/test.js --out-file test-generated-es5/test-es5.js",
     "test-browserify": "npm run test-es5-compile && browserify test-generated-es5/test-es5.js > test-generated-es5/test-browser.js",
