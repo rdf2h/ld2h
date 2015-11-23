@@ -1,6 +1,6 @@
 {
   "name": "ld2h",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Expand tags by rendering local or remote RDF resources, recursively.",
   "main": "src/ld2h.js",
   "devDependencies": {
