@@ -1,9 +1,13 @@
-"use strict";
+
+var rdf = require('rdf-ext');
+var RDF2h = require('rdf2h');
+var LdpStore = require('rdf-store-ldp');
+var mimeTypeUtil = require('rdf-mime-type-util');
 
 function LD2h() {
 }
 
-LD2h.store = new rdf.LdpStore();
+LD2h.store = new LdpStore();
 
 LD2h.expand = function() {
     function canonicalize(url) {
@@ -54,11 +58,11 @@ LD2h.expand = function() {
                         var uri = canonicalize(relativeURI);
                         var graphUri = uri.split("#")[0];
                         LD2h.store.match(
+                                null,
+                                null,
+                                null,
                                 graphUri,
-                                null,
-                                null,
-                                null,
-                                function (data, error) {
+                                function (error, data) {
                                     if (!data) {
                                         console.warn("Couldn't get any triple from "+graphUri+". reason: "+error);
                                     } else {
@@ -82,18 +86,18 @@ LD2h.expand = function() {
 
 LD2h.getDataGraph = function(callback) {
     var matchersTtl = $("#data").text();
-    rdf.parseTurtle(matchersTtl, function (data) {
+    mimeTypeUtil.parsers.parse('text/turtle', matchersTtl, null, window.location.toString().split('#')[0]).then(function (data) {
         console.log(data.toString());
         callback(data);
-    }, window.location.toString().split('#')[0]);
-}
+    });
+};
 
 LD2h.getMatchersGraph = function (callback) {
     function parse(matchersTtl) {
-        rdf.parseTurtle(matchersTtl, function (matchers) {
+        mimeTypeUtil.parsers.parse('text/turtle',matchersTtl, null, window.location.toString().split('#')[0]).then(function (matchers) {
             console.log(matchers.toString());
             callback(matchers);
-        }, window.location.toString().split('#')[0]);
+        });
     }
     var matchersElem = $("#matchers");
     if (matchersElem[0]) {
@@ -114,7 +118,7 @@ LD2h.getMatchersGraph = function (callback) {
             var processLink = function() {
                 var href = matcherLinks[currentLink++].href;
                 $.get(href, function (matchersTtl) {
-                    rdf.parseTurtle(matchersTtl, function (matchers) {
+                    mimeTypeUtil.parsers.parse('text/turtle', matchersTtl, null, window.location.toString().split('#')[0]).then(function (matchers) {
                         console.log(matchers.toString());
                         matchersGraph.addAll(matchers);
                         if (matcherLinks.length > currentLink) {
@@ -122,7 +126,7 @@ LD2h.getMatchersGraph = function (callback) {
                         } else {
                             callback(matchersGraph);
                         }
-                    }, window.location.toString().split('#')[0]);
+                    });
                 });
             };
             processLink();
@@ -132,4 +136,11 @@ LD2h.getMatchersGraph = function (callback) {
         }
     }
     
+};
+
+if (typeof window !== 'undefined') {
+    window.LD2h = LD2h;
+}
+if (typeof module !== 'undefined') {
+    module.exports = LD2h;
 }

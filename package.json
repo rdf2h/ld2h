@@ -1,0 +1,44 @@
+{
+  "name": "ld2h",
+  "version": "0.0.1",
+  "description": "Expand tags by rendering local or remote RDF resources, recursively.",
+  "main": "generated-es5/ld2h.js",
+  "devDependencies": {
+    "babel-cli": "^6.2.0",
+    "babel-preset-es2015": "^6.1.18",
+    "babelify": "^7.2.0",
+    "browserify": "^6.3.3",
+    "browserify-tape-spec": "^1.1.2",
+    "tap-spec": "^2.1.0",
+    "tape": "^3.0.3",
+    "exorcist": "^0.4.0"
+  },
+  "dependencies": {
+    "rdf-ext": "0.3.0-rc1",
+    "rdf-parser-n3": "0.3.0-rc1",
+    "rdf2h": "*",
+    "rdf-store-ldp": "0.3.0-rc2",
+    "rdf-mime-type-util": "0.3.0-rc2"
+  },
+  "babel": {
+    "presets": [
+      "es2015"
+    ]
+  },
+  "scripts": {
+    "prepublish": "mkdir -p dist && browserify src/ld2h.js  -d --external rdf-ext --external rdf2h --external es6-promise --external rdf-serializer-jsonld --external rdf-serializer-n3 --external rdf-serializer-ntriples --external rdf-serializer-sparql-update --external rdf-parser-jsonld | exorcist dist/ld2h.js.map > dist/ld2h.js",
+    "test": "babel-node test/test.js | tap-spec",
+    "test-es5-compile": "mkdir -p test-generated-es5 && babel --source-maps inline test/test.js --out-file test-generated-es5/test-es5.js",
+    "test-browserify": "npm run test-es5-compile && browserify test-generated-es5/test-es5.js > test-generated-es5/test-browser.js",
+    "testb": "npm run test-browserify && open test-index.html"
+  },
+  "repository": "https://github.com/rdf2h/ld2h.git",
+  "keywords": [
+    "rdf",
+    "linked-data",
+    "rendering"
+  ],
+  "author": "Reto Gmür",
+  "license": "Apache-2.0",
+  "homepage": "http://rdf2h.github.io/ld2h/"
+}
