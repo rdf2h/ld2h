@@ -62,6 +62,12 @@ whole HTML document to be replaced with the result of rendering the resource wit
 the URI of the page as HTML:
 
     <html class="render" resource="">
+    
+You can also specify a context using the `context` attribute:
+
+    <select  class="render" resource="http://schema.org/Person" context="c:options">
+        <option>This will be replaced with the persons....</option>
+    </select>
 
 ## Fetch resources
 
