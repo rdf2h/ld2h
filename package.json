@@ -16,7 +16,7 @@
   "dependencies": {
     "rdf-ext": "0.3.0-rc1",
     "rdf-parser-n3": "0.3.0-rc1",
-    "rdf2h": "*",
+    "rdf2h": "^0.2.1",
     "rdf-store-ldp": "0.3.0-rc2",
     "rdf-mime-type-util": "0.3.0-rc2"
   },
