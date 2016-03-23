@@ -2,7 +2,6 @@
 var rdf = require('rdf-ext');
 var RDF2h = require('rdf2h');
 var LdpStore = require('rdf-store-ldp');
-var mimeTypeUtil = require('rdf-mime-type-util');
 
 function LD2h() {
 }
@@ -86,7 +85,7 @@ LD2h.expand = function() {
 
 LD2h.getDataGraph = function(callback) {
     var matchersTtl = $("#data").text();
-    mimeTypeUtil.parsers.parse('text/turtle', matchersTtl, null, window.location.toString().split('#')[0]).then(function (data) {
+    rdf.parsers.parse('text/turtle', matchersTtl, null, window.location.toString().split('#')[0]).then(function (data) {
         console.log(data.toString());
         callback(data);
     });
@@ -94,7 +93,7 @@ LD2h.getDataGraph = function(callback) {
 
 LD2h.getMatchersGraph = function (callback) {
     function parse(matchersTtl) {
-        mimeTypeUtil.parsers.parse('text/turtle',matchersTtl, null, window.location.toString().split('#')[0]).then(function (matchers) {
+        rdf.parsers.parse('text/turtle',matchersTtl, null, window.location.toString().split('#')[0]).then(function (matchers) {
             console.log(matchers.toString());
             callback(matchers);
         });
@@ -118,7 +117,7 @@ LD2h.getMatchersGraph = function (callback) {
             var processLink = function() {
                 var href = matcherLinks[currentLink++].href;
                 $.get(href, function (matchersTtl) {
-                    mimeTypeUtil.parsers.parse('text/turtle', matchersTtl, null, window.location.toString().split('#')[0]).then(function (matchers) {
+                    rdf.parsers.parse('text/turtle', matchersTtl, null, window.location.toString().split('#')[0]).then(function (matchers) {
                         console.log(matchers.toString());
                         matchersGraph.addAll(matchers);
                         if (matcherLinks.length > currentLink) {
