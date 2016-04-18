@@ -83,3 +83,14 @@ example you can the following tag to your HTML:
         </p>
 
 
+## Start the process
+
+Start LD3h expansion adding the following code: 
+
+    <script type="text/javascript">
+        $(function () {
+            LD2h.expand();
+    });
+    </script>
+
+
