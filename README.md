@@ -6,9 +6,14 @@ To see it in action check out [http://rdf2h.github.io/ld2h/example.html](http://
 
 ## Include the required scripts
 
-    <script src="js/libs/rdf2h/rdf2h.js"></script>
-    <script src="js/libs/jquery/jquery.min.js"></script>
-    <script src="js/ld2h.js"></script>
+    <script src="//cdn.rawgit.com/rdf2h/rdf2h/v0.3.0/dist/rdf-ext.js"></script>
+    <script src="//cdn.rawgit.com/rdf2h/rdf2h/v0.3.0/dist/rdf2h.js"></script>
+    <script src="//cdn.rawgit.com/retog/rdf-parser-n3-browser/v0.3.0b/dist/n3-parser.js"></script>
+    <script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script src="dist/ld2h.js"></script>
+
+The above includes the parser for `text/turtle` to support more formats you'll 
+have to include the respective parsers.
 
 ## Link a matcher file
 

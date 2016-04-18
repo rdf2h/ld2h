@@ -1,7 +1,7 @@
 
 var rdf = require('rdf-ext');
 var RDF2h = require('rdf2h');
-var LdpStore = require('rdf-store-ldp');
+var LdpStore = require('rdf-store-ldp/lite');
 
 function LD2h() {
 }
