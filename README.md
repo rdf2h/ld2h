@@ -85,7 +85,7 @@ example you can the following tag to your HTML:
 
 ## Start the process
 
-Start LD3h expansion adding the following code: 
+Start LD2h expansion adding the following code: 
 
     <script type="text/javascript">
         $(function () {
