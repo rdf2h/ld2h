@@ -42,7 +42,9 @@ page or from somewhere else on the web rendered  in the browser using
             
         <script type="text/javascript">
 $(function () {
-        LD2h.expand();
+        LD2h.expand().then(function() { 
+            console.log("finsihed expanding");
+        });
 });
         </script>
     </head>

@@ -274,7 +274,7 @@ var RDF2h = require('rdf2h');
 var LdpStore = require('rdf-store-ldp/lite');
 
 function LD2h() {
-}
+ }
 
 LD2h.store = new LdpStore();
 
@@ -287,8 +287,9 @@ LD2h.expand = function() {
         div.innerHTML = div.innerHTML; // Run the current innerHTML back through the parser
         return div.firstChild.href;
     }
-    LD2h.getMatchersGraph(function (matchers) {
-        LD2h.getDataGraph(function (localData) {
+    return LD2h.getMatchersGraph().then(function (matchers) {
+        return LD2h.getDataGraph().then(function (localData) {
+            var resultPromises = new Array();
             function expandWithMatchers() {
                 //Rendering with local RDF
                 var elems = $(".render");
@@ -326,7 +327,7 @@ LD2h.expand = function() {
                     if (typeof relativeURI !== 'undefined') {
                         var uri = canonicalize(relativeURI);
                         var graphUri = uri.split("#")[0];
-                        LD2h.store.match(
+                        resultPromises.push(LD2h.store.match(
                                 null,
                                 null,
                                 null,
@@ -340,7 +341,7 @@ LD2h.expand = function() {
                                     var rendered = new RDF2h(matchers).render(data, rdf.createNamedNode(uri), context);
                                     elem.html(rendered);
                                     expandWithMatchers();
-                                });
+                                }));
                     } else {
                         console.warn("Element of class fetch without resource attribute cannot be rendered.", elem);
                     }
@@ -349,62 +350,67 @@ LD2h.expand = function() {
                 processsNextElem();
             }
             expandWithMatchers();
+            return Promise.all(resultPromises);
         });
     });
+       
 }
 
-LD2h.getDataGraph = function(callback) {
-    var matchersTtl = $("#data").text();
-    rdf.parsers.parse('text/turtle', matchersTtl, null, window.location.toString().split('#')[0]).then(function (data) {
-        console.log(data.toString());
-        callback(data);
+LD2h.getDataGraph = function() {
+    return new Promise(function(resolve, reject) {
+        var matchersTtl = $("#data").text();
+        rdf.parsers.parse('text/turtle', matchersTtl, null, window.location.toString().split('#')[0]).then(function (data) {
+            console.log(data.toString());
+            resolve(data);
+        });
     });
 };
 
-LD2h.getMatchersGraph = function (callback) {
-    function parse(matchersTtl) {
-        rdf.parsers.parse('text/turtle',matchersTtl, null, window.location.toString().split('#')[0]).then(function (matchers) {
-            console.log(matchers.toString());
-            callback(matchers);
-        });
-    }
-    var matchersElem = $("#matchers");
-    if (matchersElem[0]) {
-        if (matchersElem.attr("src")) {
-            console.warn("Using script element with src causes is not recommended, use <link rel=\"matchers\" instead");
-            $.get(matchersElem.attr("src"), function (matchersTtl) {
-                parse(matchersTtl);
+LD2h.getMatchersGraph = function () {
+    return new Promise(function(resolve, reject) {
+        function parse(matchersTtl) {
+            rdf.parsers.parse('text/turtle',matchersTtl, null, window.location.toString().split('#')[0]).then(function (matchers) {
+                console.log(matchers.toString());
+                resolve(matchers);
             });
-        } else {
-            var matchersTtl = matchersElem.text();
-            parse(matchersTtl);
         }
-    } else {
-        var matcherLinks = $("link[rel='matchers']");
-        if (matcherLinks.length > 0) {
-            var matchersGraph = rdf.createGraph();
-            var currentLink = 0;
-            var processLink = function() {
-                var href = matcherLinks[currentLink++].href;
-                $.get(href, function (matchersTtl) {
-                    rdf.parsers.parse('text/turtle', matchersTtl, null, window.location.toString().split('#')[0]).then(function (matchers) {
-                        console.log(matchers.toString());
-                        matchersGraph.addAll(matchers);
-                        if (matcherLinks.length > currentLink) {
-                            processLink();
-                        } else {
-                            callback(matchersGraph);
-                        }
-                    });
+        var matchersElem = $("#matchers");
+        if (matchersElem[0]) {
+            if (matchersElem.attr("src")) {
+                console.warn("Using script element with src causes is not recommended, use <link rel=\"matchers\" instead");
+                $.get(matchersElem.attr("src"), function (matchersTtl) {
+                    parse(matchersTtl);
                 });
-            };
-            processLink();
+            } else {
+                var matchersTtl = matchersElem.text();
+                parse(matchersTtl);
+            }
         } else {
-            console.warn("No matchers could be found, specify a script element with \n\
-            id matchers or link headers of type matchers");
+            var matcherLinks = $("link[rel='matchers']");
+            if (matcherLinks.length > 0) {
+                var matchersGraph = rdf.createGraph();
+                var currentLink = 0;
+                var processLink = function() {
+                    var href = matcherLinks[currentLink++].href;
+                    $.get(href, function (matchersTtl) {
+                        rdf.parsers.parse('text/turtle', matchersTtl, null, window.location.toString().split('#')[0]).then(function (matchers) {
+                            console.log(matchers.toString());
+                            matchersGraph.addAll(matchers);
+                            if (matcherLinks.length > currentLink) {
+                                processLink();
+                            } else {
+                                resolve(matchersGraph);
+                            }
+                        });
+                    });
+                };
+                processLink();
+            } else {
+                console.warn("No matchers could be found, specify a script element with \n\
+                id matchers or link headers of type matchers");
+            }
         }
-    }
-    
+    });
 };
 
 if (typeof window !== 'undefined') {
