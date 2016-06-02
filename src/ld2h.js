@@ -18,9 +18,9 @@ LD2h.expand = function() {
         return div.firstChild.href;
     }
     return LD2h.getMatchersGraph().then(function (matchers) {
-        return LD2h.getDataGraph().then(function (localData) {
-            var resultPromises = new Array();
+        return LD2h.getDataGraph().then(function (localData) {       
             function expandWithMatchers() {
+                var resultPromises = new Array();
                 //Rendering with local RDF
                 var elems = $(".render");
                 elems.removeClass("render");
@@ -67,16 +67,17 @@ LD2h.expand = function() {
                                 null,
                                 null,
                                 null,
-                                graphUri,
-                                function (error, data) {
+                                graphUri).then(function(data) {
                                     if (!data) {
-                                        console.warn("Couldn't get any triple from "+graphUri+". reason: "+error);
+                                        
                                     } else {
                                         console.log("Got graph of size "+data.length+" from "+graphUri);
                                     }
                                     var rendered = new RDF2h(matchers).render(data, rdf.createNamedNode(uri), context);
                                     elem.html(rendered);
-                                    expandWithMatchers();
+                                    return expandWithMatchers();
+                                }).catch(function(error) {
+                                    console.warn("Error retrieving "+graphUri+": "+error);
                                 }));
                     } else {
                         console.warn("Element of class fetch without resource attribute cannot be rendered.", elem);
@@ -84,9 +85,9 @@ LD2h.expand = function() {
                     processsNextElem();
                 }
                 processsNextElem();
+                return Promise.all(resultPromises);
             }
-            expandWithMatchers();
-            return Promise.all(resultPromises);
+            return expandWithMatchers();     
         });
     });
        
