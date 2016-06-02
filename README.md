@@ -83,6 +83,17 @@ example you can the following tag to your HTML:
         </p>
 
 
+### Fetch resource from alternative location
+
+By default LD2h dereferences the URI of the resource to get its description, in 
+some situations the RDF description should be retrieved from a different location.
+This can be achieved by specifying the `graph` attribute, for example:
+
+    <span resource="http://schema.org/BusOrCoach" 
+              graph="https://raw.githubusercontent.com/schemaorg/schemaorg/sdo-deimos/data/releases/3.0/ext-auto.ttl" class="fetch">schema:BusOrCoach with data from ontology on GitHub</span>
+        </p>
+
+
 ## Start the process
 
 Start LD2h expansion adding the following code: 
