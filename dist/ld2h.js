@@ -326,7 +326,13 @@ LD2h.expand = function() {
                     var relativeURI = elem.attr("resource");
                     if (typeof relativeURI !== 'undefined') {
                         var uri = canonicalize(relativeURI);
-                        var graphUri = uri.split("#")[0];
+                        var relativeGraphURI = elem.attr("graph");
+                        var graphUri;
+                        if (typeof relativeGraphURI !== 'undefined') {
+                            graphUri = canonicalize(relativeGraphURI);
+                        } else {
+                            graphUri = uri.split("#")[0];
+                        }
                         resultPromises.push(LD2h.store.match(
                                 null,
                                 null,
