@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>LD2h Tests</title>
+  <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+
+  <script id="data" type="text/turtle">
+    @prefix s: <http://schema.org/> .
+
+    <> s:headline "LD2h Tests" .
+    <> s:text "LD2h Test example data" .
+  </script>
+</head>
+<body>
+  <div id="mocha"></div>
+
+  <script src="../node_modules/mocha/mocha.js"></script>
+  <script>
+    if (window.initMochaPhantomJS) {
+      window.initMochaPhantomJS()
+    }
+
+    mocha.setup('bdd')
+  </script>
+  <script src="test.build.js"></script>
+  <script>mocha.run()</script>
+</body>
+</html>
