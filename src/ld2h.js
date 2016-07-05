@@ -67,7 +67,9 @@ LD2h.expand = function() {
                                 null,
                                 null,
                                 null,
-                                graphUri).then(function(data) {
+                                graphUri).catch(function(error) {
+                                        console.warn("Error retrieving "+graphUri+": "+error);
+                                    }).then(function(data) {
                                     if (!data) {
                                         
                                     } else {
@@ -77,7 +79,7 @@ LD2h.expand = function() {
                                     elem.html(rendered);
                                     return expandWithMatchers();
                                 }).catch(function(error) {
-                                    console.warn("Error retrieving "+graphUri+": "+error);
+                                    console.warn("Error rendering "+graphUri+": "+error);
                                 }));
                     } else {
                         console.warn("Element of class fetch without resource attribute cannot be rendered.", elem);
