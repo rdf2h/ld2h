@@ -305,7 +305,7 @@ LD2h.expand = function() {
                         var uri = canonicalize(relativeURI);
                         var rendered = new RDF2h(matchers).render(localData, rdf.createNamedNode(uri), context);
                         elem.html(rendered);
-                        expandWithMatchers();
+                        resultPromises.push(expandWithMatchers());
                     } else {
                         console.warn("Element of class render without resource attribute cannot be rendered.", elem);
                     }
