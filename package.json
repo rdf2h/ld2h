@@ -16,7 +16,7 @@
   "dependencies": {
     "rdf-ext": "0.3.0",
     "rdf-parser-n3": "0.3.0",
-    "rdf2h": "0.3.0",
+    "rdf2h": "0.5.0",
     "rdf-store-ldp": "0.3.1"
   },
   "babel": {
