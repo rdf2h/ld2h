@@ -367,8 +367,10 @@ LD2h.expand = function() {
 
 LD2h.getDataGraph = function() {
     return new Promise(function(resolve, reject) {
-        var matchersTtl = $("#data").text();
-        rdf.parsers.parse('text/turtle', matchersTtl, null, window.location.toString().split('#')[0]).then(function (data) {
+        var dataElem  = $("#data")
+        var serializedRDF = dataElem.text();
+        var serializationFormat = dataElem.attr("type");
+        rdf.parsers.parse(serializationFormat, serializedRDF, null, window.location.toString().split('#')[0]).then(function (data) {
             console.log(data.toString());
             resolve(data);
         });
@@ -377,8 +379,11 @@ LD2h.getDataGraph = function() {
 
 LD2h.getMatchersGraph = function () {
     return new Promise(function(resolve, reject) {
-        function parse(matchersTtl) {
-            rdf.parsers.parse('text/turtle',matchersTtl, null, window.location.toString().split('#')[0]).then(function (matchers) {
+        function parse(serializedRDF, serializationFormat) {
+            if (!serializationFormat) {
+                serializationFormat = 'text/turtle';
+            }
+            rdf.parsers.parse(serializationFormat, serializedRDF, null, window.location.toString().split('#')[0]).then(function (matchers) {
                 console.log(matchers.toString());
                 resolve(matchers);
             });
@@ -391,8 +396,8 @@ LD2h.getMatchersGraph = function () {
                     parse(matchersTtl);
                 });
             } else {
-                var matchersTtl = matchersElem.text();
-                parse(matchersTtl);
+                var serializedRDF = matchersElem.text();
+                parse(serializedRDF, matchersElem.attr("type"));
             }
         } else {
             var matcherLinks = $("link[rel='matchers']");
