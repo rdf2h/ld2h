@@ -33,21 +33,22 @@ after(() => {
 describe('example page', () => {
     var page = driver.get('http://localhost:3000/example.html');
     it('title', function(done) {
-        this.timeout(25000);
-        page.then(() => driver.getTitle())
+        this.timeout(60000);
+        //delaying execution by 1 s to allow for asynchrnous rendering
+        setTimeout(() =>page.then(() => driver.getTitle())
             .then((title) => title.should.equal('An LD2h demo page'))
-            .then(() => done());
+            .then(() => done()), 1000);
     });
     it('inline content', function(done) {
-        this.timeout(25000);
-        //delaying execution by 10 ms to allow for asynchrnous rendering
+        this.timeout(60000);
+        //delaying execution by 1 s to allow for asynchrnous rendering
         setTimeout(() => page.then(() => driver.findElements(By.xpath("//span[@resource='https://farewellutopia.com/me']")))
             .then(elements => elements[0].getText())
             .then((text) => text.should.equal("Name: Reto Gmür"))
-            .then(() => done()), 10);
+            .then(() => done()), 1000);
     });
     it('remote content', function(done) {
-        this.timeout(25000);
+        this.timeout(60000);
         //delaying execution by 3000 ms to allow loading remote content
         setTimeout(() => page.then(() => driver.findElements(By.xpath("//span[@resource='http://schema.org/BusOrCoach']")))
             .then(elements => elements[0].getText())
@@ -59,21 +60,22 @@ describe('example page', () => {
 describe('example-jsonld page', () => {
     var page = driver.get('http://localhost:3000/example-jsonld.html');
     it('title', function(done) {
-        this.timeout(25000);
-        page.then(() => driver.getTitle())
+        this.timeout(60000);
+        //delaying execution by 1 s to allow for asynchrnous rendering
+        setTimeout(() => page.then(() => driver.getTitle())
             .then((title) => title.should.equal('An LD2h demo page'))
-            .then(() => done());
+            .then(() => done()), 1000);
     });
     it('inline content', function(done) {
-        this.timeout(25000);
-        //delaying execution by 10 ms to allow for asynchrnous rendering
+        this.timeout(60000);
+        //delaying execution by 1 s to allow for asynchrnous rendering
         setTimeout(() => page.then(() => driver.findElements(By.xpath("//span[@resource='https://farewellutopia.com/me']")))
             .then(elements => elements[0].getText())
             .then((text) => text.should.equal("Name: Reto Gmür"))
-            .then(() => done()), 10);
+            .then(() => done()), 1000);
     });
     it('remote content', function(done) {
-        this.timeout(25000);
+        this.timeout(60000);
         //delaying execution by 3000 ms to allow loading remote content
         setTimeout(() => page.then(() => driver.findElements(By.xpath("//span[@resource='http://schema.org/BusOrCoach']")))
             .then(elements => elements[0].getText())
