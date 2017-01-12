@@ -350,6 +350,9 @@ LD2h.expand = function() {
                                     return expandWithMatchers();
                                 }).catch(function(error) {
                                     console.warn("Error rendering "+graphUri+": "+error);
+                                    if (error.stack) {
+                                        console.warn(error.stack);
+                                    }
                                 }));
                     } else {
                         console.warn("Element of class fetch without resource attribute cannot be rendered.", elem);
