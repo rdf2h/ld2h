@@ -10,6 +10,7 @@
     "chai-webdriver": "^1.2.0",
     "exorcist": "^0.4.0",
     "express": "^4.14.0",
+    "phantomjs": "^2.1.7",
     "geckodriver": "^1.2.0",
     "mocha": "^3.1.2",
     "selenium-webdriver": "^3.0.1"

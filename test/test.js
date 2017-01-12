@@ -3,11 +3,15 @@ require('chai').should();
 var webdriver = require('selenium-webdriver'),
     By = webdriver.By,
     until = webdriver.until;
+    
+ 
+ console.log("hui************************")
  
 var driver = new webdriver.Builder()
-    .forBrowser('firefox')
+    .forBrowser('PhantomJS').usingServer('http://localhost:4444/wd/hub')
     .build();
   
+console.log("hui")
 
 before(function(done) {
     var express = require('express');
