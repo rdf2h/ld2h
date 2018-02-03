@@ -6,16 +6,10 @@
 @prefix foaf: <http://xmlns.com/foaf/0.1/> .
 @prefix c: <http://ld2h.example.org/context#> .
 
-<page> a r2h:Matcher ;
-  r2h:triplePattern [    
-    r2h:subject r2h:this;
-    r2h:predicate s:headline;
-  ];
-  r2h:template [ 
+<page> a r2h:Template; 
+    r2h:type s:WebPage;
     r2h:context c:FullPage;
-    r2h:mustache <#page-template>
-  ];
-  r2h:before <title>.
+    r2h:mustache <#page-template>.
 
 <title> a r2h:Matcher ;
   r2h:triplePattern [    
@@ -24,11 +18,10 @@
   ];
   r2h:template [ 
     r2h:context r2h:Default;
-    r2h:mustache '''<h2>{{dc:title}}</h2>
-        {{{:continue}}}'''
-  ];
-  r2h:before <label>.
-
+    r2h:mustache """<h2>{{dc:title}}</h2>
+        {{{:continue}}}"""
+  ].
+ 
 <label> a r2h:Matcher ;
   r2h:triplePattern [    
     r2h:subject r2h:this;
@@ -36,8 +29,8 @@
   ];
   r2h:template [ 
     r2h:context r2h:Default;
-    r2h:mustache '''Label: {{rdfs:label}}<br/>
-         {{{:continue}}}'''
+    r2h:mustache """Label: {{rdfs:label}}<br/>
+         {{{:continue}}}"""
   ];
   r2h:before <catchall>.
           
@@ -48,8 +41,8 @@
   ];
   r2h:template [ 
     r2h:context r2h:Default;
-    r2h:mustache '''Name: {{foaf:name}}<br/>
-         {{{:continue}}}'''
+    r2h:mustache """Name: {{foaf:name}}<br/>
+         {{{:continue}}}"""
   ];
   r2h:before <label>.  
 

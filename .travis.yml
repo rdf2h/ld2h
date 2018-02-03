@@ -20,7 +20,7 @@ deploy:
     on:
       tags: true
   - provider: npm
-    email: "reto.gmuer@zazuko.com"
+    email: "reto@factsmission.com"
     api_key:
       secure: "by26QWTeVgmtZ/uDE08MBu7lasKuKJKYu7ZXR2fdC4FboYbQr27V4WTIc4EJIjpWMul7V0bVVOCIjOFc90tOfh/RX/3TxELzkLhLkmFbXVgEM5Q+Qg7Ay2gms/Gto5ttxb2b7Z4vAV18oDjS5SY2+mveAPkQ5pkvO3V8DyF5hqornQK27tNDm/SDSxFz8Tvgk6edCq2OVbSLiw89Oukzm6WkNgw5N/otb0HSgeUKr9FleI+YDkEU4BmKYlA1vns9R37vdBS9bzEHlfmUhS2+kLbjYWkTyJHLole5ld6mig57SfrNRkZykP1wjrUU7zGqPlnyuUII1zL18YbH94H9TReHMZqQ63kgv2xYch2tCLTbT/w6ecw389MaYxKIU6VmBAoOvCAJ1zGk9BgQvzyQEpWP5gAPspHi4Rsebl9JBLSOofxOw1jqIIBVy20FZ06Rs8NbUhWpQ+hhJAwZwf5+56/w4HdWjnlUnkcx1yKSY06vuj9FcC5oV7cWlykeeqIvmeydBCqZwEjVgGQsefbbo0wLmu4y4w6nHFkisaHbMd2Xa/RMIe2V5m029yWs017iEPcFB1PZABsfMYfPiJ9JxJd6wKSOWmsx6eMN8lAGalq0/V0QBqUXxYVxlOojfNj5Z8UrQJOVkVwhcVmnF0KJ7VLWa4L3UVVADuazI5RL2wc="
     on:

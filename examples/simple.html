@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>This will be replaced when the data is loaded</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+        <script src="ld2h.js"></script>
+        <script id="data" type="text/turtle">
+            @prefix foaf: <http://xmlns.com/foaf/0.1/>.
+            <http://example.org/a>  a foaf:Person;
+                foaf:name "Alice";
+                foaf:account
+                    [   a   foaf:OnlineAccount, foaf:OnlineChatAccount;
+                        foaf:accountServiceHomepage <http://www.freenode.net/>;
+                        foaf:accountName "Alice" ],
+                    [   a   foaf:OnlineAccount, foaf:OnlineGamingAccount;
+                        foaf:accountServiceHomepage <http://www.nerds.play/>;
+                        foaf:accountName "TheAlice" ].
+        </script>
+        <script id="matchers" type="text/turtle">
+            @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+            @prefix r2h: <http://rdf2h.github.io/2015/rdf2h#> .
+            @prefix dc: <http://dublincore.org/2012/06/14/dcelements#>.
+            @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+            @prefix foaf: <http://xmlns.com/foaf/0.1/> .
+            [ a r2h:Template;
+                r2h:type foaf:Person;
+                r2h:context r2h:Default;
+                r2h:mustache """{{@prefix foaf: <http://xmlns.com/foaf/0.1/>}}
+                    Name: {{foaf:name}}</br>
+                    <ul>{{#foaf:account}}
+                    <li>{{{:render .}}}</li>
+                    {{/foaf:account}}</ul>"""
+            ].
+            [ a r2h:Template;
+                r2h:type foaf:OnlineAccount;
+                r2h:context r2h:Default;
+                r2h:mustache """{{@prefix foaf: <http://xmlns.com/foaf/0.1/>}}
+                    <div class="account">
+                        Connect with {{foaf:accountName}} on {{foaf:accountServiceHomepage}}
+                    </div>"""
+            ].
+        </script>
+        <script type="text/javascript">
+            $(function () {
+                    LD2h.expand().then(function() { 
+                        console.log("finsihed expanding");
+                    });
+            });
+        </script>
+    </head>
+    <body>
+Resource: <div class="render" resource="http://example.org/a" context="http://rdf2h.github.io/2015/rdf2h#Default">....</div></html>
+    </body>
+</html>

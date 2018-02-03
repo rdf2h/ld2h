@@ -1,12 +1,13 @@
 
-var rdf = require('rdf-ext');
+var rdf = require('rdflib');
 var RDF2h = require('rdf2h');
-var LdpStore = require('rdf-store-ldp/lite');
+var GraphNode = require("rdfgraphnode");
+
 
 function LD2h() {
- }
+}
 
-LD2h.store = new LdpStore();
+//LD2h.store = new LdpStore();
 
 LD2h.expand = function() {
     function canonicalize(url) {
@@ -33,7 +34,7 @@ LD2h.expand = function() {
                     var relativeURI = elem.attr("resource");
                     if (typeof relativeURI !== 'undefined') {
                         var uri = canonicalize(relativeURI);
-                        var rendered = new RDF2h(matchers).render(localData, rdf.createNamedNode(uri), context);
+                        var rendered = new RDF2h(matchers).render(localData, rdf.sym(uri), context);
                         elem.html(rendered);
                         resultPromises.push(expandWithMatchers());
                     } else {
@@ -63,19 +64,16 @@ LD2h.expand = function() {
                         } else {
                             graphUri = uri.split("#")[0];
                         }
-                        resultPromises.push(LD2h.store.match(
-                                null,
-                                null,
-                                null,
-                                graphUri).catch(function(error) {
+                        GraphNode.rdfFetch(graphUri).catch(function(error) {
                                         console.warn("Error retrieving "+graphUri+": "+error);
-                                    }).then(function(data) {
+                                    }).then(function(response) {
+                                        let data = response.graph;
                                     if (!data) {
                                         
                                     } else {
                                         console.log("Got graph of size "+data.length+" from "+graphUri);
                                     }
-                                    var rendered = new RDF2h(matchers).render(data, rdf.createNamedNode(uri), context);
+                                    var rendered = new RDF2h(matchers).render(data, rdf.sym(uri), context);
                                     elem.html(rendered);
                                     return expandWithMatchers();
                                 }).catch(function(error) {
@@ -83,7 +81,7 @@ LD2h.expand = function() {
                                     if (error.stack) {
                                         console.warn(error.stack);
                                     }
-                                }));
+                                });
                     } else {
                         console.warn("Element of class fetch without resource attribute cannot be rendered.", elem);
                     }
@@ -103,23 +101,22 @@ LD2h.getDataGraph = function() {
         var dataElem  = $("#data")
         var serializedRDF = dataElem.text();
         var serializationFormat = dataElem.attr("type");
-        rdf.parsers.parse(serializationFormat, serializedRDF, null, window.location.toString().split('#')[0]).then(function (data) {
-            console.log(data.toString());
-            resolve(data);
-        });
+        var data = rdf.graph();
+        rdf.parse(serializedRDF, data, window.location.toString().split('#')[0], serializationFormat);
+        console.log(data.toString());
+        resolve(data);
     });
 };
 
 LD2h.getMatchersGraph = function () {
     return new Promise(function(resolve, reject) {
         function parse(serializedRDF, serializationFormat) {
+            var graph = rdf.graph();
             if (!serializationFormat) {
                 serializationFormat = 'text/turtle';
             }
-            rdf.parsers.parse(serializationFormat, serializedRDF, null, window.location.toString().split('#')[0]).then(function (matchers) {
-                console.log(matchers.toString());
-                resolve(matchers);
-            });
+            rdf.parse(serializedRDF, graph, window.location.toString().split('#')[0], serializationFormat);
+            resolve(graph);
         }
         var matchersElem = $("#matchers");
         if (matchersElem[0]) {
@@ -135,20 +132,17 @@ LD2h.getMatchersGraph = function () {
         } else {
             var matcherLinks = $("link[rel='matchers']");
             if (matcherLinks.length > 0) {
-                var matchersGraph = rdf.createGraph();
+                var matchersGraph = rdf.graph();
                 var currentLink = 0;
                 var processLink = function() {
                     var href = matcherLinks[currentLink++].href;
                     $.get(href, function (matchersTtl) {
-                        rdf.parsers.parse('text/turtle', matchersTtl, null, window.location.toString().split('#')[0]).then(function (matchers) {
-                            console.log(matchers.toString());
-                            matchersGraph.addAll(matchers);
-                            if (matcherLinks.length > currentLink) {
-                                processLink();
-                            } else {
-                                resolve(matchersGraph);
-                            }
-                        });
+                        rdf.parse(matchersTtl, matchersGraph, href, 'text/turtle');    
+                        if (matcherLinks.length > currentLink) {
+                            processLink();
+                        } else {
+                            resolve(matchersGraph);
+                        }
                     });
                 };
                 processLink();
