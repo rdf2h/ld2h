@@ -18,9 +18,9 @@ LD2h.expand = function() {
         div.innerHTML = div.innerHTML; // Run the current innerHTML back through the parser
         return div.firstChild.href;
     }
-    return LD2h.getMatchersGraph().then(function (matchers) {
+    return LD2h.getRenderersGraph().then(function (renderers) {
         return LD2h.getDataGraph().then(function (localData) {       
-            function expandWithMatchers() {
+            function expandWithRenderers() {
                 var resultPromises = new Array();
                 //Rendering with local RDF
                 var elems = $(".render");
@@ -34,9 +34,9 @@ LD2h.expand = function() {
                     var relativeURI = elem.attr("resource");
                     if (typeof relativeURI !== 'undefined') {
                         var uri = canonicalize(relativeURI);
-                        var rendered = new RDF2h(matchers).render(localData, rdf.sym(uri), context);
+                        var rendered = new RDF2h(renderers).render(localData, rdf.sym(uri), context);
                         elem.html(rendered);
-                        resultPromises.push(expandWithMatchers());
+                        resultPromises.push(expandWithRenderers());
                     } else {
                         console.warn("Element of class render without resource attribute cannot be rendered.", elem);
                     }
@@ -73,9 +73,9 @@ LD2h.expand = function() {
                                     } else {
                                         console.log("Got graph of size "+data.length+" from "+graphUri);
                                     }
-                                    var rendered = new RDF2h(matchers).render(data, rdf.sym(uri), context);
+                                    var rendered = new RDF2h(renderers).render(data, rdf.sym(uri), context);
                                     elem.html(rendered);
-                                    return expandWithMatchers();
+                                    return expandWithRenderers();
                                 }).catch(function(error) {
                                     console.warn("Error rendering "+graphUri+": "+error);
                                     if (error.stack) {
@@ -90,7 +90,7 @@ LD2h.expand = function() {
                 processsNextElem();
                 return Promise.all(resultPromises);
             }
-            return expandWithMatchers();     
+            return expandWithRenderers();     
         });
     });
        
@@ -108,7 +108,7 @@ LD2h.getDataGraph = function() {
     });
 };
 
-LD2h.getMatchersGraph = function () {
+LD2h.getRenderersGraph = function () {
     return new Promise(function(resolve, reject) {
         function parse(serializedRDF, serializationFormat) {
             var graph = rdf.graph();
@@ -118,37 +118,37 @@ LD2h.getMatchersGraph = function () {
             rdf.parse(serializedRDF, graph, window.location.toString().split('#')[0], serializationFormat);
             resolve(graph);
         }
-        var matchersElem = $("#matchers");
-        if (matchersElem[0]) {
-            if (matchersElem.attr("src")) {
-                console.warn("Using script element with src causes is not recommended, use <link rel=\"matchers\" instead");
-                $.get(matchersElem.attr("src"), function (matchersTtl) {
-                    parse(matchersTtl);
+        var renderersElem = $("#renderers");
+        if (renderersElem[0]) {
+            if (renderersElem.attr("src")) {
+                console.warn("Using script element with src causes is not recommended, use <link rel=\"renderers\" instead");
+                $.get(renderersElem.attr("src"), function (renderersTtl) {
+                    parse(renderersTtl);
                 });
             } else {
-                var serializedRDF = matchersElem.text();
-                parse(serializedRDF, matchersElem.attr("type"));
+                var serializedRDF = renderersElem.text();
+                parse(serializedRDF, renderersElem.attr("type"));
             }
         } else {
-            var matcherLinks = $("link[rel='matchers']");
-            if (matcherLinks.length > 0) {
-                var matchersGraph = rdf.graph();
+            var rendererLinks = $("link[rel='renderers']");
+            if (rendererLinks.length > 0) {
+                var renderersGraph = rdf.graph();
                 var currentLink = 0;
                 var processLink = function() {
-                    var href = matcherLinks[currentLink++].href;
-                    $.get(href, function (matchersTtl) {
-                        rdf.parse(matchersTtl, matchersGraph, href, 'text/turtle');    
-                        if (matcherLinks.length > currentLink) {
+                    var href = rendererLinks[currentLink++].href;
+                    $.get(href, function (renderersTtl) {
+                        rdf.parse(renderersTtl, renderersGraph, href, 'text/turtle');    
+                        if (rendererLinks.length > currentLink) {
                             processLink();
                         } else {
-                            resolve(matchersGraph);
+                            resolve(renderersGraph);
                         }
                     });
                 };
                 processLink();
             } else {
-                console.warn("No matchers could be found, specify a script element with \n\
-                id matchers or link headers of type matchers");
+                console.warn("No renderers could be found, specify a script element with \n\
+                id renderers or link headers of type renderers");
             }
         }
     });
