@@ -9,7 +9,7 @@
 <page> a r2h:Template; 
     r2h:type s:WebPage;
     r2h:context c:FullPage;
-    r2h:mustache """<head>
+    r2h:mustache """{{{@prefix s: <http://schema.org/>}}}<head>
       <title>{{s:headline}}</title>
     </heaad>
     <body>
