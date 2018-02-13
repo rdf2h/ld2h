@@ -4215,7 +4215,7 @@ rc@^1.1.7:
 
 rdf2h@rdf2h/rdf2h#v2.0:
   version "0.5.1"
-  resolved "https://codeload.github.com/rdf2h/rdf2h/tar.gz/03ed2a1402cf912e356a2c756f1c712c71e0d3e1"
+  resolved "https://codeload.github.com/rdf2h/rdf2h/tar.gz/a0c21aca5e70f0cb9a618e47dd33a315c016f1bf"
   dependencies:
     mustache "*"
     rdfgraphnode "1.1.0"
@@ -4234,18 +4234,8 @@ rdfgraphnode@^1.1.4:
     node-fetch "^1.7.3"
     rdflib "../rdflib.js"
 
-rdflib@../rdflib.js:
+rdflib@../rdflib.js, rdflib@^0.16.5:
   version "0.16.5"
-  dependencies:
-    async "^0.9.x"
-    jsonld "^0.4.5"
-    n3 "^0.4.1"
-    node-fetch "^1.7.1"
-    xmldom "^0.1.22"
-
-rdflib@^0.16.5:
-  version "0.16.5"
-  resolved "https://registry.yarnpkg.com/rdflib/-/rdflib-0.16.5.tgz#f9e8eb40d1def8806df5812eb7e43d2ffeb3b885"
   dependencies:
     async "^0.9.x"
     jsonld "^0.4.5"
