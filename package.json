@@ -23,7 +23,7 @@
   "dependencies": {
     "jquery": "^3.2.1",
     "rdf2h": "rdf2h/rdf2h#v2.0",
-    "rdfgraphnode": "^1.1.4"
+    "rdfgraphnode": "^1.1.5"
   },
   "scripts": {
     "start": "webpack-dev-server --hot --inline --content-base examples",
