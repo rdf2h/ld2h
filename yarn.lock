@@ -2438,8 +2438,8 @@ hoek@2.x.x:
   resolved "https://registry.yarnpkg.com/hoek/-/hoek-2.16.3.tgz#20bb7403d3cea398e91dc4710a8ff1b8274a25ed"
 
 hoek@4.x.x:
-  version "4.2.0"
-  resolved "https://registry.yarnpkg.com/hoek/-/hoek-4.2.0.tgz#72d9d0754f7fe25ca2d01ad8f8f9a9449a89526d"
+  version "4.2.1"
+  resolved "https://registry.yarnpkg.com/hoek/-/hoek-4.2.1.tgz#9634502aa12c445dd5a7c5734b572bb8738aacbb"
 
 home-or-tmp@^2.0.0:
   version "2.0.0"
@@ -4215,7 +4215,7 @@ rc@^1.1.7:
 
 rdf2h@rdf2h/rdf2h#v2.0:
   version "0.5.1"
-  resolved "https://codeload.github.com/rdf2h/rdf2h/tar.gz/a0c21aca5e70f0cb9a618e47dd33a315c016f1bf"
+  resolved "https://codeload.github.com/rdf2h/rdf2h/tar.gz/7372b443259e156b8b10a8a01be87fa3d324cdb3"
   dependencies:
     mustache "*"
     rdfgraphnode "1.1.0"
