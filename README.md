@@ -6,9 +6,6 @@ To see it in action check out [http://rdf2h.github.io/ld2h/example.html](http://
 
 ## Include the required scripts
 
-    <script src="//cdn.rawgit.com/rdf2h/rdf2h/v0.3.0/dist/rdf-ext.js"></script>
-    <script src="//cdn.rawgit.com/rdf2h/rdf2h/v0.3.0/dist/rdf2h.js"></script>
-    <script src="//cdn.rawgit.com/retog/rdf-parser-n3-browser/v0.3.0b/dist/n3-parser.js"></script>
     <script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
     <script src="dist/ld2h.js"></script>
 
@@ -17,33 +14,18 @@ have to include the respective parsers.
 
 ## Link a matcher file
 
-    <link rel="matchers" href="matchers-example.ttl" type="text/turtle" />
+    <link rel="matchers" href="examlple-renderers.ttl" type="text/turtle" />
 
 alternatively you can also define the matchers inline in a script element with id `matchers`:
 
         <script id="matchers" type="text/turtle">
             @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-            @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-            @prefix r2h: <http://rdf2h.github.io/2015/rdf2h#> .
-            @prefix dc: <http://dublincore.org/2012/06/14/dcelements#>.
-            [ a r2h:Matcher ;
-                    r2h:triplePattern [    
-                    r2h:subject r2h:this;
-                    r2h:predicate rdfs:label;
-                ];
-                r2h:template [ 
-                    r2h:context r2h:Default;
-                    r2h:mustache '''<h1>{{rdfs:label}}</h1>
-                    {{#rdfs:comment}}
-                            <p>Comment: {{.}}</p>
-                    {{/rdfs:comment}}'''
-                ]
-            ].
+            ....
 
         </script>
 
 To learn how to define matchers check out the rdf2h documentation: 
-[http://rdf2h.github.io/rdf2h/manual.html#matchers](http://rdf2h.github.io/rdf2h/manual.html#matchers)
+[https://rdf2h.github.io/rdf2h-documentation/](https://rdf2h.github.io/rdf2h-documentation/)
 
 ## Include some data
 
