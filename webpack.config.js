@@ -26,7 +26,8 @@ module.exports = {
  },
  externals: {
    'node-fetch': 'fetch',
-   'xmldom': 'window'
+   'xmldom': 'window',
+   'jquery': '$'
  },
  devtool: 'source-map',
  plugins: [

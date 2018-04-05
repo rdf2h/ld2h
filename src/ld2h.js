@@ -1,4 +1,4 @@
-
+var $ = require('jquery');
 var rdf = require('ext-rdflib');
 var RDF2h = require('rdf2h');
 var GraphNode = require("rdfgraphnode-rdfext");
@@ -67,15 +67,14 @@ LD2h.expand = function() {
                         GraphNode.rdfFetch(graphUri).catch(function(error) {
                                         console.warn("Error retrieving "+graphUri+": "+error);
                                     }).then(function(response) {
-                                        let data = response.graph;
-                                    if (!data) {
-                                        
-                                    } else {
-                                        console.log("Got graph of size "+data.length+" from "+graphUri);
-                                    }
-                                    var rendered = new RDF2h(renderers).render(data, rdf.sym(uri), context);
-                                    elem.html(rendered);
-                                    return expandWithRenderers();
+                                        return response.graph().then(
+                                            data =>  {
+                                                console.log("Got graph of ssize "+data.length+" from "+graphUri);
+                                                var rendered = new RDF2h(renderers).render(data, rdf.sym(uri), context);
+                                                elem.html(rendered);
+                                                return expandWithRenderers();
+                                            }
+                                        );
                                 }).catch(function(error) {
                                     console.warn("Error rendering "+graphUri+": "+error);
                                     if (error.stack) {
