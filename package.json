@@ -15,6 +15,7 @@
     "express": "^4.16.3",
     "geckodriver": "^1.2.0",
     "html-webpack-plugin": "^2.30.1",
+    "mkdirp": "^0.5.1",
     "mocha": "^2.3.3",
     "ncp": "^2.0.0",
     "selenium-webdriver": "^3.0.1",
@@ -30,7 +31,7 @@
   },
   "scripts": {
     "start": "webpack-dev-server --hot --inline --content-base examples",
-    "build": "ncp examples/ distribution/latest/ && webpack -p",
+    "build": "mkdirp distribution && ncp examples/ distribution/latest/ && webpack -p",
     "pretest": "yarn build",
     "test": "node_modules/.bin/mocha"
   },
