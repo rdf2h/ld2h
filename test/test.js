@@ -20,7 +20,7 @@ before(function(done) {
       function(){
         console.log("Express server listening on port " + app.get('port'));
         //app.use(logger('dev'));
-        app.use(express.static(path.join(__dirname, '../dist')));
+        app.use(express.static(path.join(__dirname, '../distribution/latest')));
     });
     done();
 });

@@ -1,7 +1,7 @@
 
-var rdf = require('rdflib');
+var rdf = require('ext-rdflib');
 var RDF2h = require('rdf2h');
-var GraphNode = require("rdfgraphnode");
+var GraphNode = require("rdfgraphnode-rdfext");
 
 
 function LD2h() {

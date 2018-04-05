@@ -6,28 +6,31 @@
   "devDependencies": {
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.2",
+    "babel-preset-env": "^1.6.1",
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-react": "^6.24.1",
     "chai": "^3.5.0",
     "chai-webdriver": "^1.2.0",
     "css-loader": "^0.28.8",
+    "express": "^4.16.3",
     "geckodriver": "^1.2.0",
     "html-webpack-plugin": "^2.30.1",
     "mocha": "^2.3.3",
     "ncp": "^2.0.0",
     "selenium-webdriver": "^3.0.1",
     "style-loader": "^0.19.1",
-    "webpack": "^3.10.0",
-    "webpack-dev-server": "^2.9.7"
+    "uglifyjs-webpack-plugin": "^1.2.4",
+    "webpack": "^4.1.1",
+    "webpack-cli": "^2.0.11"
   },
   "dependencies": {
     "jquery": "^3.2.1",
     "rdf2h": "^2.0.0",
-    "rdfgraphnode": "^1.1.5"
+    "rdfgraphnode-rdfext": "^1.2.4"
   },
   "scripts": {
     "start": "webpack-dev-server --hot --inline --content-base examples",
-    "build": "ncp examples/ dist/ && webpack -p",
+    "build": "ncp examples/ distribution/latest/ && webpack -p",
     "pretest": "yarn build",
     "test": "node_modules/.bin/mocha"
   },
