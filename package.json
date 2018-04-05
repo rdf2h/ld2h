@@ -11,6 +11,7 @@
     "babel-preset-react": "^6.24.1",
     "chai": "^3.5.0",
     "chai-webdriver": "^1.2.0",
+    "cross-var": "^1.1.0",
     "css-loader": "^0.28.8",
     "express": "^4.16.3",
     "geckodriver": "^1.2.0",
@@ -31,7 +32,7 @@
   },
   "scripts": {
     "start": "webpack-dev-server --hot --inline --content-base examples",
-    "build": "mkdirp distribution && ncp examples/ distribution/latest/ && webpack -p",
+    "build": "mkdirp distribution && ncp examples/ distribution/latest/ && webpack -p && cross-var \"ncp distribution/latest distribution/$npm_package_version\"",
     "pretest": "yarn build",
     "test": "node_modules/.bin/mocha"
   },
