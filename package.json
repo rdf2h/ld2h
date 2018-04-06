@@ -1,36 +1,40 @@
 {
   "name": "ld2h",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "Expand tags by rendering local or remote RDF resources, recursively.",
   "main": "src/ld2h.js",
   "devDependencies": {
-    "browserify": "^6.3.3",
-    "browserify-tape-spec": "^1.1.2",
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-react": "^6.24.1",
     "chai": "^3.5.0",
     "chai-webdriver": "^1.2.0",
-    "exorcist": "^0.4.0",
-    "express": "^4.14.0",
+    "cross-var": "^1.1.0",
+    "css-loader": "^0.28.8",
+    "express": "^4.16.3",
     "geckodriver": "^1.2.0",
-    "mocha": "^3.1.2",
-    "selenium-webdriver": "^3.0.1"
+    "html-webpack-plugin": "^2.30.1",
+    "mkdirp": "^0.5.1",
+    "mocha": "^2.3.3",
+    "ncp": "^2.0.0",
+    "selenium-webdriver": "^3.0.1",
+    "style-loader": "^0.19.1",
+    "uglifyjs-webpack-plugin": "^1.2.4",
+    "webpack": "^4.1.1",
+    "webpack-cli": "^2.0.11"
   },
   "dependencies": {
-    "rdf-ext": "0.3.0",
-    "rdf-parser-n3": "0.3.0",
-    "rdf2h": "0.5.0",
-    "rdf-store-ldp": "0.3.1"
-  },
-  "babel": {
-    "presets": [
-      "es2015"
-    ]
+    "jquery": "^3.2.1",
+    "rdf2h": "^2.0.0",
+    "rdfgraphnode-rdfext": "^1.2.4"
   },
   "scripts": {
-    "prepublish": "mkdir -p dist && browserify src/ld2h.js  -d --external rdf-ext --external rdf2h --external es6-promise  | exorcist dist/ld2h.js.map > dist/ld2h.js",
-    "test": "mocha test/test.js",
-    "test-es5-compile": "mkdir -p test-generated-es5 && babel --source-maps inline test/test.js --out-file test-generated-es5/test-es5.js",
-    "test-browserify": "npm run test-es5-compile && browserify test-generated-es5/test-es5.js > test-generated-es5/test-browser.js",
-    "testb": "npm run test-browserify && open test-index.html"
+    "start": "webpack-dev-server --hot --inline --content-base examples",
+    "build": "mkdirp distribution && ncp examples/ distribution/latest/ && webpack -p && cross-var \"ncp distribution/latest distribution/$npm_package_version\"",
+    "pretest": "yarn build",
+    "test": "node_modules/.bin/mocha"
   },
   "repository": "https://github.com/rdf2h/ld2h.git",
   "keywords": [
@@ -38,7 +42,7 @@
     "linked-data",
     "rendering"
   ],
-  "author": "Reto Gm��r",
+  "author": "Reto Gmür",
   "license": "Apache-2.0",
   "homepage": "http://rdf2h.github.io/ld2h/"
 }
