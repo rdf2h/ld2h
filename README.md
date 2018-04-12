@@ -2,7 +2,7 @@
 
 Expand tags by rendering local or remote RDF resources, recursively.
 
-To see it in action check out [http://rdf2h.github.io/ld2h/example.html](http://rdf2h.github.io/ld2h/example.html).
+To see it in action check out [http://rdf2h.github.io/ld2h/latest/example.html](http://rdf2h.github.io/ld2h/latest/example.html).
 
 ## Include the required scripts
 
