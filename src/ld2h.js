@@ -136,10 +136,9 @@ LD2h.getRenderersGraph = function () {
                 var renderersArray = new Array() ;
                 var currentLink = 0;
                 var processLink = function() {
-                    var renderersGraph = rdf.graph();
+                    renderersArray[currentLink] = rdf.graph();
                     var href = rendererLinks[currentLink++].href;
                     $.get(href, function (renderersTtl) {
-                        renderersArray[currentLink - 1] = rdf.graph();
                         rdf.parse(renderersTtl, renderersArray[currentLink - 1], href, 'text/turtle');
                         if (rendererLinks.length > currentLink) {
                             processLink();
