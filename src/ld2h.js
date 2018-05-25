@@ -19,6 +19,7 @@ LD2h.expand = function() {
         return div.firstChild.href;
     }
     return LD2h.getRenderersGraph().then(function (renderers) {
+        console.log(renderers);
         return LD2h.getDataGraph().then(function (localData) {       
             function expandWithRenderers() {
                 var resultPromises = new Array();
@@ -132,16 +133,19 @@ LD2h.getRenderersGraph = function () {
         } else {
             var rendererLinks = $("link[rel='renderers']");
             if (rendererLinks.length > 0) {
-                var renderersGraph = rdf.graph();
+                var renderersArray = new Array() ;
                 var currentLink = 0;
                 var processLink = function() {
+                    var renderersGraph = rdf.graph();
                     var href = rendererLinks[currentLink++].href;
                     $.get(href, function (renderersTtl) {
-                        rdf.parse(renderersTtl, renderersGraph, href, 'text/turtle');    
+                        renderersArray[currentLink - 1] = rdf.graph();
+                        rdf.parse(renderersTtl, renderersArray[currentLink - 1], href, 'text/turtle');
                         if (rendererLinks.length > currentLink) {
                             processLink();
                         } else {
-                            resolve(renderersGraph);
+                            console.log(renderersArray);
+                            resolve(renderersArray);
                         }
                     });
                 };
