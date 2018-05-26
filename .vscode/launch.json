@@ -1,6 +1,7 @@
 {
     "version": "0.2.0",
     "configurations": [
+
     {
         "type": "node",
         "request": "launch",
@@ -20,8 +21,10 @@
             "type": "chrome",
             "request": "launch",
             "name": "Launch Chrome against localhost",
-            "url": "http://localhost:8080",
-            "webRoot": "${workspaceFolder}"
+            "url": "http://localhost:8080/example.html",
+            "webRoot": "${workspaceFolder}",
+            "sourceMaps": true,
+            "trace":true
         }
     ]
 }

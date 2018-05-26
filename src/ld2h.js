@@ -19,7 +19,6 @@ LD2h.expand = function() {
         return div.firstChild.href;
     }
     return LD2h.getRenderersGraph().then(function (renderers) {
-        console.log(renderers);
         return LD2h.getDataGraph().then(function (localData) {       
             function expandWithRenderers() {
                 var resultPromises = new Array();
@@ -116,8 +115,7 @@ LD2h.getRenderersGraph = function () {
             if (!serializationFormat) {
                 serializationFormat = 'text/turtle';
             }
-            rdf.parse(serializedRDF, graph, window.location.toString().split('#')[0], serializationFormat);
-            resolve(graph);
+            rdf.parse(serializedRDF, graph, window.location.toString().split('#')[0], serializationFormat, () => resolve(graph));
         }
         var renderersElem = $("#renderers");
         if (renderersElem[0]) {
@@ -133,22 +131,15 @@ LD2h.getRenderersGraph = function () {
         } else {
             var rendererLinks = $("link[rel='renderers']");
             if (rendererLinks.length > 0) {
-                var renderersArray = new Array() ;
-                var currentLink = 0;
-                var processLink = function() {
-                    renderersArray[currentLink] = rdf.graph();
-                    var href = rendererLinks[currentLink++].href;
-                    $.get(href, function (renderersTtl) {
-                        rdf.parse(renderersTtl, renderersArray[currentLink - 1], href, 'text/turtle');
-                        if (rendererLinks.length > currentLink) {
-                            processLink();
-                        } else {
-                            console.log(renderersArray);
-                            resolve(renderersArray);
-                        }
-                    });
-                };
-                processLink();
+
+                let graphPromises = new Array();
+                for (var iteration = 0; iteration < rendererLinks.length; iteration++) {
+                    var href = rendererLinks[iteration].href.split('#')[0];
+                    graphPromises.push(GraphNode.rdfFetch(href));
+                }
+
+                resolve(Promise.all(graphPromises));
+                
             } else {
                 console.warn("No renderers could be found, specify a script element with \n\
                 id renderers or link headers of type renderers");

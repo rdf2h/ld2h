@@ -27,7 +27,8 @@ module.exports = {
  externals: {
    'node-fetch': 'fetch',
    'xmldom': 'window',
-   'jquery': '$'
+   'jquery': '$',
+   'ext-rdflib': "$rdf"
  },
  devtool: 'source-map',
  plugins: [
