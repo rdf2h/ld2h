@@ -4,18 +4,15 @@
   "description": "Expand tags by rendering local or remote RDF resources, recursively.",
   "main": "src/ld2h.js",
   "devDependencies": {
-    "babel-core": "^6.26.0",
-    "babel-loader": "^7.1.2",
+    "babel-loader": "^7.1.4",
     "babel-preset-env": "^1.6.1",
-    "babel-preset-es2015": "^6.24.1",
-    "babel-preset-react": "^6.24.1",
     "chai": "^3.5.0",
     "chai-webdriver": "^1.2.0",
     "cross-var": "^1.1.0",
     "css-loader": "^0.28.8",
     "express": "^4.16.3",
     "geckodriver": "^1.2.0",
-    "html-webpack-plugin": "^2.30.1",
+    "html-webpack-plugin": "^3.0.6",
     "mkdirp": "^0.5.1",
     "mocha": "^2.3.3",
     "ncp": "^2.0.0",
@@ -23,7 +20,8 @@
     "style-loader": "^0.19.1",
     "uglifyjs-webpack-plugin": "^1.2.4",
     "webpack": "^4.1.1",
-    "webpack-cli": "^2.0.11"
+    "webpack-cli": "^2.0.11",
+    "webpack-dev-server": "^3.1.1"
   },
   "dependencies": {
     "jquery": "^3.2.1",
