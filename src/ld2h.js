@@ -69,7 +69,7 @@ LD2h.expand = function() {
                                     }).then(function(response) {
                                         return response.graph().then(
                                             data =>  {
-                                                console.log("Got graph of ssize "+data.length+" from "+graphUri);
+                                                console.log("Got graph of size "+data.length+" from "+graphUri);
                                                 var rendered = new RDF2h(renderers).render(data, rdf.sym(uri), context);
                                                 elem.html(rendered);
                                                 return expandWithRenderers();
@@ -135,7 +135,7 @@ LD2h.getRenderersGraph = function () {
                 let graphPromises = new Array();
                 for (var iteration = 0; iteration < rendererLinks.length; iteration++) {
                     var href = rendererLinks[iteration].href.split('#')[0];
-                    graphPromises.push(GraphNode.rdfFetch(href));
+                    graphPromises.push(GraphNode.rdfFetch(href).then(r => r.graph()));
                 }
 
                 resolve(Promise.all(graphPromises));
