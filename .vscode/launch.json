@@ -22,9 +22,10 @@
             "request": "launch",
             "name": "Launch Chrome against localhost",
             "url": "http://localhost:8080/example.html",
-            "webRoot": "${workspaceFolder}/src",
-            "sourceMaps": true,
-            "trace":true
+            "sourceMapPathOverrides": {
+                "webpack://ld2h/./*":   "${workspaceRoot}/*",
+                "webpack://$rdf/./*":   "${workspaceRoot}/*"
+            }
         }
     ]
 }
