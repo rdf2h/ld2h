@@ -7,8 +7,8 @@ const UglifyJSPlugin = require("uglifyjs-webpack-plugin");
 module.exports = {
   entry: path.resolve(__dirname, 'src', 'ld2h.js'),
   output: {
-    path: path.resolve(__dirname, 'distribution'),
-    filename: 'latest/ld2h.js',
+    path: path.resolve(__dirname, 'distribution', 'latest'),
+    filename: 'ld2h.js',
     libraryTarget: 'var',
     library: 'ld2h'
   },
@@ -30,14 +30,5 @@ module.exports = {
    'jquery': '$',
    'ext-rdflib': "$rdf"
  },
- devtool: 'source-map',
- plugins: [
-  new UglifyJSPlugin({
-    test: /\.js($|\?)/i,
-    sourceMap: true,
-    uglifyOptions: {
-        compress: true
-    }
-  })
-]
+ devtool: 'source-map'
 };
