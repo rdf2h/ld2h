@@ -29,7 +29,7 @@
     "rdfgraphnode-rdfext": "^1.3.1"
   },
   "scripts": {
-    "start": "webpack-dev-server --hot --inline --content-base examples",
+    "start": "webpack-dev-server --mode=development --hot --inline --content-base examples",
     "build": "mkdirp distribution && ncp examples/ distribution/latest/ && webpack -p && cross-var \"ncp distribution/latest distribution/$npm_package_version\"",
     "pretest": "yarn build",
     "test": "node_modules/.bin/mocha"
