@@ -102,8 +102,11 @@ LD2h.getDataGraph = function() {
         var serializationFormat = dataElem.attr("type");
         var data = rdf.graph();
         rdf.parse(serializedRDF, data, window.location.toString().split('#')[0], serializationFormat, (err, result) => {
-            console.log(data.toString());
-            resolve(result);
+            if (err) {
+                reject(err);
+            } else {
+                resolve(result);
+            }
         });
     });
 };
