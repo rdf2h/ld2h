@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html class="render" resource="" context="http://ld2h.example.org/context#FullPage">
+    <head>
+        <title>This will be replaced when the data is loaded</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="renderers" href="example-renderers.ttl" type="text/turtle" />
+        <script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+        <script src="https://retog.github.io/ext-rdflib/0.2.0/rdf.js"></script> 
+        <script src="ld2h.js"></script>
+        <script id="data" type="application/ld+json">
+            [
+                {
+                    "@id":"",
+                    "@type": "http://schema.org/WebPage",
+                    "http://schema.org/headline":"An LD2h demo page",
+                    "http://schema.org/text":[
+                        {"@value":"Everything you see on this page is content expressed in RDF either within this\r\npage or from somewhere else on the web rendered  in the browser using \r\n<a href=\"http://rdf2h.github.io/rdf2h\">RDF2h</a> and mustache templates."}
+                    ]
+                },
+                {   "@id":"https://farewellutopia.com/me",
+                    "@type": "http://xmlns.com/foaf/0.1/Person",
+                    "http://xmlns.com/foaf/0.1/name":[
+                        {"@value":"Reto Gmür"}
+                    ]
+                }
+            ]
+        </script>      
+        <script type="text/javascript">
+$(function () {
+        LD2h.expand().then(function() { 
+            console.log("finsihed expanding");
+        });
+});
+        </script>
+    </head>
+    <body>
+This will be replaced by rendered RDF.
+    </body>
+</html>
