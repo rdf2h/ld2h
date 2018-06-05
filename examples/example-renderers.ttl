@@ -11,6 +11,9 @@
     r2h:context c:FullPage;
     r2h:mustache """{{{@prefix s: <http://schema.org/>}}}<head>
       <title>{{s:headline}}</title>
+      <script>
+       console.log("Some script executing from code in template");
+      </script>
     </heaad>
     <body>
         <h1>{{s:headline}}</h1>

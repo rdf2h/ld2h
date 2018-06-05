@@ -9,6 +9,19 @@ function LD2h() {
 
 //LD2h.store = new LdpStore();
 
+function setHtmlContent(node, content) {
+    if (node[0].nodeName === "HTML") {
+        let tmp = document.createElement("html");
+        tmp.innerHTML = content;
+        let  head = tmp.getElementsByTagName("head")[0].innerHTML
+        let body = tmp.getElementsByTagName("body")[0].innerHTML
+        node.find("head").html(head);
+        node.find("body").html(body);
+    } else {
+        node.html(content);
+    }
+}
+
 LD2h.expand = function() {
     function canonicalize(url) {
         //see http://stackoverflow.com/questions/470832/getting-an-absolute-url-from-a-relative-one-ie6-issue/22918332#22918332
@@ -35,7 +48,7 @@ LD2h.expand = function() {
                     if (typeof relativeURI !== 'undefined') {
                         var uri = canonicalize(relativeURI);
                         var rendered = new RDF2h(renderers).render(localData, rdf.sym(uri), context);
-                        elem.html(rendered);
+                        setHtmlContent(elem, rendered);
                         resultPromises.push(expandWithRenderers());
                     } else {
                         console.warn("Element of class render without resource attribute cannot be rendered.", elem);
@@ -71,7 +84,7 @@ LD2h.expand = function() {
                                             data =>  {
                                                 console.log("Got graph of size "+data.length+" from "+graphUri);
                                                 var rendered = new RDF2h(renderers).render(data, rdf.sym(uri), context);
-                                                elem.html(rendered);
+                                                setHtmlContent(elem, rendered);
                                                 return expandWithRenderers();
                                             }
                                         );
