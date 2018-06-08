@@ -111,8 +111,11 @@ LD2h.expand = function() {
 LD2h.getDataGraph = function() {
     return new Promise(function(resolve, reject) {
         var dataElem  = $("#data")
-        var serializedRDF = dataElem.text();
+        var serializedRDF = dataElem[0].tagName == "SCRIPT" ? dataElem.text() : dataElem[0].outerHTML;
         var serializationFormat = dataElem.attr("type");
+        if (!serializationFormat) {
+            serializationFormat = dataElem[0].tagName == "SCRIPT" ? "applictaion/ld+json" : "text/html";
+        }
         var data = rdf.graph();
         rdf.parse(serializedRDF, data, window.location.toString().split('#')[0], serializationFormat, (err, result) => {
             if (err) {
