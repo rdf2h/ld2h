@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+ class="render" resource="" context="http://ld2h.example.org/context#FullPage">
+    <head>
+        <title>This will be replaced when the data is loaded</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+        <script src="https://retog.github.io/ext-rdflib/0.2.0/rdf.js"></script>
+        <script src="ld2h.js"></script>
+        <link rel="renderers" href="example-renderers.ttl" type="text/turtle" />
+            
+        <script type="text/javascript">
+$(function () {
+        LD2h.expand().then(function() { 
+            console.log("finsihed expanding");
+        });
+});
+        </script>
+    </head>
+    <body>
+This will be replaced by rendered RDF:
+<div id="data" prefix="
+foaf: http://xmlns.com/foaf/0.1/
+s: http://schema.org/
+rdf: http://www.w3.org/1999/02/22-rdf-syntax-ns#
+rdfs: http://www.w3.org/2000/01/rdf-schema#">
+  <div typeof="s:WebPage" about="">
+    <div property="s:text">Everything you see on this page is content expressed in RDF either within this
+        page or from somewhere else on the web rendered  in the browser using 
+        <a href="http://rdf2h.github.io/rdf2h">RDF2h</a> and mustache templates</div>
+    <div property="s:headline">An LD2h demo page</div>
+  </div>
+  <div typeof="foaf:Person" about="https://farewellutopia.com/me">
+    <div property="foaf:name">Reto Gmür</div>
+  </div>
+</div>
+    </body>
+</html>
