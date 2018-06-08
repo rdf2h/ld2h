@@ -32,17 +32,6 @@
               graph="https://cdn.rawgit.com/schemaorg/schemaorg/sdo-deimos/data/releases/3.0/ext-auto.ttl" class="fetch">schema:BusOrCoach with data from ontology on GitHub</span>
         </p>
     </body>""".
-
-<title> a r2h:Matcher ;
-  r2h:triplePattern [    
-    r2h:subject r2h:this;
-    r2h:predicate dc:title;
-  ];
-  r2h:template [ 
-    r2h:context r2h:Default;
-    r2h:mustache """<h2>{{dc:title}}</h2>
-        {{{:continue}}}"""
-  ].
  
 <label> a r2h:Template;
     r2h:type rdfs:Class;
@@ -54,8 +43,4 @@
     r2h:context r2h:Default;
     r2h:mustache """{{@prefix foaf: <http://xmlns.com/foaf/0.1/> .}}Name: {{foaf:name}}""".  
 
-<catchall> a r2h:Matcher ;
-  r2h:template [ 
-    r2h:context r2h:Default;
-    r2h:mustache "<!-- no (more) template for {{{.}}} -->"
-  ].  
+
