@@ -14,7 +14,7 @@ have to include the respective parsers.
 
 ## Link a matcher file
 
-    <link rel="matchers" href="examlple-renderers.ttl" type="text/turtle" />
+    <link rel="matchers" href="example-renderers.ttl" type="text/turtle" />
 
 alternatively you can also define the matchers inline in a script element with id `matchers`:
 
