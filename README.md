@@ -1,4 +1,4 @@
-# LD2h [![Build Status](https://travis-ci.org/rdf2h/ld2h.svg?branch=gh-pages)](https://travis-ci.org/rdf2h/ld2h)
+# LD2h [![Build Status](https://travis-ci.org/rdf2h/ld2h.svg?branch=master)](https://travis-ci.org/rdf2h/ld2h)
 
 Expand tags by rendering local or remote RDF resources, recursively.
 
