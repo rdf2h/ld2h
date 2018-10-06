@@ -1,30 +1,39 @@
 {
     "version": "0.2.0",
     "configurations": [
-
-    {
-        "type": "node",
-        "request": "launch",
-        "name": "Mocha Tests",
-        "program": "${workspaceFolder}/node_modules/mocha/bin/_mocha",
-        "args": [
-            "-u",
-            "tdd",
-            "--timeout",
-            "999999",
-            "--colors",
-            "${workspaceFolder}/test"
-        ],
-        "internalConsoleOptions": "openOnSessionStart"
-    },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Mocha Tests",
+            "program": "${workspaceFolder}/node_modules/mocha/bin/_mocha",
+            "args": [
+                "-u",
+                "tdd",
+                "--timeout",
+                "999999",
+                "--colors",
+                "${workspaceFolder}/test"
+            ],
+            "internalConsoleOptions": "openOnSessionStart"
+        },
         {
             "type": "chrome",
             "request": "launch",
             "name": "Launch Chrome against localhost",
             "url": "http://localhost:8080/example.html",
             "sourceMapPathOverrides": {
-                "webpack://ld2h/./*":   "${workspaceRoot}/*",
-                "webpack://$rdf/./*":   "${workspaceRoot}/*"
+                "webpack://ld2h/./*": "${workspaceRoot}/*",
+                "webpack://$rdf/./*": "${workspaceRoot}/*"
+            }
+        },
+        {
+            "type": "chrome",
+            "request": "launch",
+            "name": "Launch Chrome against localhost:5000",
+            "url": "http://localhost:5000/separate-publishing",
+            "sourceMapPathOverrides": {
+                "webpack://ld2h/./*": "${workspaceRoot}/*",
+                "webpack://$rdf/./*": "${workspaceRoot}/*"
             }
         }
     ]
