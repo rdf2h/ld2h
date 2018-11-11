@@ -1,4 +1,3 @@
-var $ = require('jquery');
 var rdf = require('ext-rdflib');
 var RDF2h = require('rdf2h');
 var GraphNode = require("rdfgraphnode-rdfext");
@@ -103,7 +102,6 @@ LD2h.expand = function() {
 }
 
 LD2h.getDataGraph = function() {
-    console.log("wefw");
     return new Promise(function(resolve, reject) {
         let dataElem  = document.getElementById("data");
         let serializedRDF = dataElem.tagName == "SCRIPT" ? dataElem.innerHTML : dataElem.outerHTML;
@@ -133,22 +131,34 @@ LD2h.getRenderersGraph = function () {
         }
         let renderersElem = document.getElementById("renderers");
         if (renderersElem) {
-            if (renderersElem.getAttribute("src")) {
+            let src = renderersElem.getAttribute("src")
+            if (src) {
                 console.warn('Using script element with src causes is not recommended, use <link rel="renderers" instead');
-                $.get(renderersElem.getAttribute("src"), function (renderersTtl) {
-                    parse(renderersTtl);
-                });
+                fetch(src,
+                    {headers: {
+                        "Accept": "text/turtle",
+                    }})
+                    .then(r => {
+                        if (r.ok) {
+                            return r.text();
+                        }
+                        throw new Error(src + " responded with " + r.status);
+                    })
+                    .then(j => {
+                        parse(j);
+                    })
+                    .catch(e => console.error(e));
             } else {
                 var serializedRDF = renderersElem.innerHTML;
                 parse(serializedRDF, renderersElem.getAttribute("type"));
             }
         } else {
-            var rendererLinks = $("link[rel='renderers']");
+            let rendererLinks = document.querySelectorAll("link[rel='renderers']");
+            console.log(rendererLinks);
             if (rendererLinks.length > 0) {
-
                 let graphPromises = new Array();
-                for (var iteration = 0; iteration < rendererLinks.length; iteration++) {
-                    var href = rendererLinks[iteration].href.split('#')[0];
+                for (let i = 0; i < rendererLinks.length; i++) {
+                    var href = rendererLinks[i].href.split('#')[0];
                     graphPromises.push(GraphNode.rdfFetch(href).then(r => r.graph()));
                 }
 
