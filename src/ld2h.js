@@ -10,15 +10,15 @@ function LD2h() {
 //LD2h.store = new LdpStore();
 
 function setHtmlContent(node, content) {
-    if (node[0].nodeName === "HTML") {
+    if (node.nodeName === "HTML") {
         let tmp = document.createElement("html");
         tmp.innerHTML = content;
-        let  head = tmp.getElementsByTagName("head")[0].innerHTML
-        let body = tmp.getElementsByTagName("body")[0].innerHTML
-        node.find("head").html(head);
-        node.find("body").html(body);
+        let head = tmp.getElementsByTagName("head")[0].innerHTML;
+        let body = tmp.getElementsByTagName("body")[0].innerHTML;
+        node.getElementsByTagName("head")[0].innerHTML = head;
+        node.getElementsByTagName("body")[0].innerHTML = body;
     } else {
-        node.html(content);
+        node.innerHTML = content;
     }
 }
 
@@ -36,15 +36,15 @@ LD2h.expand = function() {
             function expandWithRenderers() {
                 var resultPromises = new Array();
                 //Rendering with local RDF
-                var elems = $(".render");
-                elems.removeClass("render");
-                for (var i = 0; i < elems.length; i++) {
-                    var elem = $(elems[i]);
-                    var context = elem.attr("context");
+                let renderElems = document.getElementsByClassName("render");
+                for (var i = 0; i < renderElems.length; i++) {
+                    let elem = renderElems[i];
+                    elem.classList.remove("render");
+                    var context = elem.getAttribute("context")
                     if (context) {
                         context = RDF2h.resolveCurie(context);
                     }
-                    var relativeURI = elem.attr("resource");
+                    var relativeURI = elem.getAttribute("resource");
                     if (typeof relativeURI !== 'undefined') {
                         var uri = canonicalize(relativeURI);
                         var rendered = new RDF2h(renderers).render(localData, rdf.sym(uri), context);
@@ -55,22 +55,18 @@ LD2h.expand = function() {
                     }
                 }
                 //Remote resources
-                var elems = $(".fetch");
-                elems.removeClass("fetch");
-                var currentElem = 0;
-                function processsNextElem() {
-                    if (currentElem >= elems.length) {
-                        return;
-                    }
-                    var elem = $(elems[currentElem++]);
-                    var context = elem.attr("context");
+                let fetchElems = document.getElementsByClassName("fetch");
+                for (var i = 0; i < fetchElems.length; i++) {
+                    let elem = fetchElems[i];
+                    elem.classList.remove("fetch")
+                    var context = elem.getAttribute("context");
                     if (context) {
                         context = RDF2h.resolveCurie(context);
                     }
-                    var relativeURI = elem.attr("resource");
+                    var relativeURI = elem.getAttribute("resource");
                     if (typeof relativeURI !== 'undefined') {
                         var uri = canonicalize(relativeURI);
-                        var relativeGraphURI = elem.attr("graph");
+                        var relativeGraphURI = elem.getAttribute("graph");
                         var graphUri;
                         if (typeof relativeGraphURI !== 'undefined') {
                             graphUri = canonicalize(relativeGraphURI);
@@ -97,9 +93,7 @@ LD2h.expand = function() {
                     } else {
                         console.warn("Element of class fetch without resource attribute cannot be rendered.", elem);
                     }
-                    processsNextElem();
                 }
-                processsNextElem();
                 return Promise.all(resultPromises);
             }
             return expandWithRenderers();     
@@ -109,12 +103,13 @@ LD2h.expand = function() {
 }
 
 LD2h.getDataGraph = function() {
+    console.log("wefw");
     return new Promise(function(resolve, reject) {
-        var dataElem  = $("#data")
-        var serializedRDF = dataElem[0].tagName == "SCRIPT" ? dataElem.text() : dataElem[0].outerHTML;
-        var serializationFormat = dataElem.attr("type");
+        let dataElem  = document.getElementById("data");
+        let serializedRDF = dataElem.tagName == "SCRIPT" ? dataElem.innerHTML : dataElem.outerHTML;
+        let serializationFormat = dataElem.getAttribute("type");
         if (!serializationFormat) {
-            serializationFormat = dataElem[0].tagName == "SCRIPT" ? "applictaion/ld+json" : "text/html";
+            serializationFormat = dataElem.tagName == "SCRIPT" ? "applictaion/ld+json" : "text/html";
         }
         var data = rdf.graph();
         rdf.parse(serializedRDF, data, window.location.toString().split('#')[0], serializationFormat, (err, result) => {
@@ -136,16 +131,16 @@ LD2h.getRenderersGraph = function () {
             }
             rdf.parse(serializedRDF, graph, window.location.toString().split('#')[0], serializationFormat, () => resolve(graph));
         }
-        var renderersElem = $("#renderers");
-        if (renderersElem[0]) {
-            if (renderersElem.attr("src")) {
-                console.warn("Using script element with src causes is not recommended, use <link rel=\"renderers\" instead");
-                $.get(renderersElem.attr("src"), function (renderersTtl) {
+        let renderersElem = document.getElementById("renderers");
+        if (renderersElem) {
+            if (renderersElem.getAttribute("src")) {
+                console.warn('Using script element with src causes is not recommended, use <link rel="renderers" instead');
+                $.get(renderersElem.getAttribute("src"), function (renderersTtl) {
                     parse(renderersTtl);
                 });
             } else {
-                var serializedRDF = renderersElem.text();
-                parse(serializedRDF, renderersElem.attr("type"));
+                var serializedRDF = renderersElem.innerHTML;
+                parse(serializedRDF, renderersElem.getAttribute("type"));
             }
         } else {
             var rendererLinks = $("link[rel='renderers']");
