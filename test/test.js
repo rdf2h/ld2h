@@ -26,7 +26,8 @@ before(function(done) {
 });
 
 
-after(() => {
+after(done => {
+  done()
   return driver.quit();
 });
 
