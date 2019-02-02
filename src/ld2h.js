@@ -63,11 +63,11 @@ LD2h.expand = function() {
                         context = RDF2h.resolveCurie(context);
                     }
                     var relativeURI = elem.getAttribute("resource");
-                    if (typeof relativeURI !== 'undefined') {
+                    if ((relativeURI !== null) && (typeof relativeURI !== 'undefined')) {
                         var uri = canonicalize(relativeURI);
                         var relativeGraphURI = elem.getAttribute("graph");
                         var graphUri;
-                        if (typeof relativeGraphURI !== 'undefined') {
+                        if (relativeGraphURI) { //empty strings are ignored
                             graphUri = canonicalize(relativeGraphURI);
                         } else {
                             graphUri = uri.split("#")[0];
@@ -104,19 +104,23 @@ LD2h.expand = function() {
 LD2h.getDataGraph = function() {
     return new Promise(function(resolve, reject) {
         let dataElem  = document.getElementById("data");
-        let serializedRDF = dataElem.tagName == "SCRIPT" ? dataElem.innerHTML : dataElem.outerHTML;
-        let serializationFormat = dataElem.getAttribute("type");
-        if (!serializationFormat) {
-            serializationFormat = dataElem.tagName == "SCRIPT" ? "applictaion/ld+json" : "text/html";
-        }
-        var data = rdf.graph();
-        rdf.parse(serializedRDF, data, window.location.toString().split('#')[0], serializationFormat, (err, result) => {
-            if (err) {
-                reject(err);
-            } else {
-                resolve(result);
+        if (dataElem) {
+            let serializedRDF = dataElem.tagName == "SCRIPT" ? dataElem.innerHTML : dataElem.outerHTML;
+            let serializationFormat = dataElem.getAttribute("type");
+            if (!serializationFormat) {
+                serializationFormat = dataElem.tagName == "SCRIPT" ? "applictaion/ld+json" : "text/html";
             }
-        });
+            var data = rdf.graph();
+            rdf.parse(serializedRDF, data, window.location.toString().split('#')[0], serializationFormat, (err, result) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(result);
+                }
+            });
+        } else {
+            resolve(rdf.graph());
+        }
     });
 };
 
