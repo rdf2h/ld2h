@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>This will be replaced when the data is loaded</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+        <script src="https://retog.github.io/ext-rdflib/0.2.0/rdf.js"></script>
+        <script src="ld2h.js"></script>
+        <link rel="renderers" href="https://rdf2h.github.io/renderers/0.0.4/fallback-renderers.ttl" type="text/turtle" />
+        <script type="text/javascript">
+            $(function () {
+                    LD2h.expand().then(function() { 
+                        console.log("finsihed expanding");
+                    });
+            });
+        </script>
+    </head>
+    <body>
+Resource: <div class="fetch" resource="http://lod.opentransportdata.swiss/didok/8504300" 
+        graph="https://lod.opentransportdata.swiss/query?query=DESCRIBE%20%3Chttp%3A%2F%2Flod.opentransportdata.swiss%2Fdidok%2F8504300%3E" context="http://rdf2h.github.io/2015/rdf2h#Default">....</div>
+    </body>
+</html>
