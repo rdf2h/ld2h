@@ -8,14 +8,59 @@ function LD2h() {
 
 //LD2h.store = new LdpStore();
 
+//Needed for inserted scripts to be executed
+function replaceElement(element) {
+    const newElement = document.createElement(element.nodeName);
+    //copy attributes (eg. src)
+    for (let i = 0; i < element.attributes.length; i++) {
+        newElement.setAttribute(element.attributes[i].name, element.attributes[i].value);
+    }
+    newElement.innerHTML = element.innerHTML;
+    element.parentNode.insertBefore(newElement, element);
+    element.remove();
+}
+
+function insertHTML(node, htmlString) {
+    node.innerHTML = "";
+    //innerHTML should work if no scripts are included
+    if (!/<script/i.test(htmlString)) {
+        try {
+            node.innerHTML = htmlString;
+        }
+        //fail silently and try elaborated method below
+        catch (e) {}
+    }
+    //if innerHTML failed or wasn't executed
+    if (node.innerHTML === "") {
+        const tmp = document.createElement(node.nodeName);
+        tmp.innerHTML = htmlString;
+        if (tmp.hasChildNodes()) {
+            scripts = tmp.getElementsByTagName("script");
+            if (scripts.length > 0) {
+                scripts = Array.from(scripts)
+                for (let i = 0; i < scripts.length; i++) {
+                    replaceElement(scripts[i]);
+                }
+            }
+            //tmp.firstChild is live, so this will move all children
+            while (tmp.firstChild) {
+                console.log(tmp.firstChild)
+                node.appendChild(tmp.firstChild);
+            }
+        } else {
+            console.log("no children");
+        }
+    }
+}
+
 function setHtmlContent(node, content) {
     if (node.nodeName === "HTML") {
         let tmp = document.createElement("html");
         tmp.innerHTML = content;
         let head = tmp.getElementsByTagName("head")[0].innerHTML;
         let body = tmp.getElementsByTagName("body")[0].innerHTML;
-        node.getElementsByTagName("head")[0].innerHTML = head;
-        node.getElementsByTagName("body")[0].innerHTML = body;
+        insertHTML(node.getElementsByTagName("head")[0], head);
+        insertHTML(node.getElementsByTagName("body")[0], body);
     } else {
         node.innerHTML = content;
     }
