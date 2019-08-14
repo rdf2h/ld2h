@@ -35,7 +35,7 @@ function insertHTML(node, htmlString) {
         const tmp = document.createElement(node.nodeName);
         tmp.innerHTML = htmlString;
         if (tmp.hasChildNodes()) {
-            scripts = tmp.getElementsByTagName("script");
+            let scripts = tmp.getElementsByTagName("script");
             if (scripts.length > 0) {
                 scripts = Array.from(scripts)
                 for (let i = 0; i < scripts.length; i++) {
