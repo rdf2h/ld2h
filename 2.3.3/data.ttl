@@ -1,0 +1,7 @@
+    @prefix s: <http://schema.org/>.
+    @prefix foaf: <http://xmlns.com/foaf/0.1/> .
+    <> a s:WebPage .
+    <> s:headline "An LD2h demo page" .
+    <> s:text """Everything you see on this page is content expressed in RDF either within this
+page or from somewhere else on the web rendered  in the browser using 
+<a href="http://rdf2h.github.io/rdf2h">RDF2h</a> and mustache templates.""".
