@@ -99,27 +99,27 @@ LD2h.expand = function() {
                     }
                 }
                 //Remote resources
-                let fetchElems = document.getElementsByClassName("fetch");
-                for (var i = 0; i < fetchElems.length; i++) {
+                let fetchElems = Array.from(document.getElementsByClassName("fetch"));
+                for (let i = 0; i < fetchElems.length; i++) {
                     let elem = fetchElems[i];
-                    elem.classList.remove("fetch")
-                    var context = elem.getAttribute("context");
+                    elem.classList.remove("fetch");
+                    console.log(fetchElems);
+                    let context = elem.getAttribute("context");
                     if (context) {
                         context = RDF2h.resolveCurie(context);
                     }
                     var relativeURI = elem.getAttribute("resource");
                     if ((relativeURI !== null) && (typeof relativeURI !== 'undefined')) {
-                        var uri = canonicalize(relativeURI);
-                        var relativeGraphURI = elem.getAttribute("graph");
-                        var graphUri;
+                        let uri = canonicalize(relativeURI);
+                        let relativeGraphURI = elem.getAttribute("graph");
+                        let graphUri;
                         if (relativeGraphURI) { //empty strings are ignored
                             graphUri = canonicalize(relativeGraphURI);
                         } else {
                             graphUri = uri.split("#")[0];
                         }
-                        GraphNode.rdfFetch(graphUri).catch(function(error) {
-                                        console.warn("Error retrieving "+graphUri+": "+error);
-                                    }).then(function(response) {
+                        GraphNode.rdfFetch(graphUri).then(function(response) {
+                                        console.log(response)
                                         return response.graph().then(
                                             data =>  {
                                                 console.log("Got graph of size "+data.length+" from "+graphUri);
@@ -127,12 +127,14 @@ LD2h.expand = function() {
                                                 setHtmlContent(elem, rendered);
                                                 return expandWithRenderers();
                                             }
-                                        );
-                                }).catch(function(error) {
-                                    console.warn("Error rendering "+graphUri+": "+error);
-                                    if (error.stack) {
-                                        console.warn(error.stack);
-                                    }
+                                        ).catch(function(error) {
+                                            console.warn("Error rendering "+graphUri+": "+error);
+                                            if (error.stack) {
+                                                console.warn(error.stack);
+                                            }
+                                        });
+                                }, function(error) {
+                                    console.warn("Error retrieving "+graphUri+": "+error);
                                 });
                     } else {
                         console.warn("Element of class fetch without resource attribute cannot be rendered.", elem);
