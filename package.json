@@ -14,7 +14,7 @@
     "geckodriver": "^1.2.0",
     "html-webpack-plugin": "^3.0.6",
     "mkdirp": "^0.5.1",
-    "mocha": "^2.3.3",
+    "mocha": "^10.1.0",
     "ncp": "^2.0.0",
     "selenium-webdriver": "^3.0.1",
     "style-loader": "^0.19.1",
